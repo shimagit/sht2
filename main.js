@@ -58,12 +58,12 @@ document.onkeyup = function(e)
   key[ e.keyCode ] = false;
 }
 
-//敵クラス
-class Teki
+//キャラクターのベースクラス
+class CharaBase
 {
-  constructor( x,y, vx,vy)
+  constructor( snum,x,y, vx,vy)
   {
-    this.sn = 38;
+    this.sn =snum;
     this.x = x;
     this.y = y;
     this.vx = vx;
@@ -84,34 +84,45 @@ class Teki
     drawSprite(this.sn, this.x, this.y);
   }
 }
-let teki=[
-  new Teki( 200<<8,200<<8, 0, 0,)
-];
 
-//弾クラス
-class Tama
+//敵クラス
+class Teki extends CharaBase
 {
-  constructor( x,y, vx,vy)
+  constructor( snum,x,y,vx,vy)
   {
-    this.sn = 5;
-    this.x = x;
-    this.y = y;
-    this.vx = vx;
-    this.vy = vy;
-    this.kill = false;
+    super( snum,x,y,vx,vy);
   }
 
   update()
   {
-    this.x += this.vx;
-    this.y += this.vy;
-    if( this.x<0 || this.x>FIELD_W<<8 ||
-      this.y<0 || this.y>FIELD_H<<8 ) this.kill = true;
+    super.update();
   }
 
   draw()
   {
-    drawSprite(this.sn, this.x, this.y);
+    super.draw();
+  }
+}
+let teki=[
+  new Teki( 39,200<<8,200<<8, 0, 0,)
+];
+
+//弾クラス
+class Tama extends CharaBase
+{
+  constructor( x,y,vx,vy)
+  {
+    super( 5,x,y,vx,vy);
+  }
+
+  update()
+  {
+    super.update();
+  }
+
+  draw()
+  {
+    super.draw();
   }
 }
 let tama=[];
@@ -299,8 +310,8 @@ function drawSprite( snum, x, y)
   let px = (x>>8) - sw/2;
   let py = (y>>8) - sh/2;
 
-  if ( px+sw/2<camera_x || px-sw/2>=camera_x+SCREEN_W ||
-    py+sh/2<camera_y || py-sh/2>=camera_y+SCREEN_H ) return;
+  if ( px+sw<camera_x || px>=camera_x+SCREEN_W ||
+    py+sh<camera_y || py>=camera_y+SCREEN_H ) return;
 
 
   vcon.drawImage( spriteImage, sx,sy,sw,sh,px,py,sw,sh)
@@ -355,30 +366,40 @@ function gameInit()
   setInterval( gameLoop, GAME_SPEED );
 }
 
-//ゲームループ
-function gameLoop()
+//オブジェクトをアップデート
+function updateObj( obj )
 {
-  //移動の処理
-  for(let i=0;i<STAR_MAX;i++)star[i].update();
-  for(let i=tama.length-1;i>=0;i--)
-    {
-      tama[i].update();
-      if(tama[i].kill)tama.splice( i,1);
-    }
-    for(let i=teki.length-1;i>=0;i--)
-      {
-        teki[i].update();
-        if(teki[i].kill)teki.splice( i,1);
-      }
-  jiki.update();
+  for(let i=obj.length-1;i>=0;i--)
+  {
+    obj[i].update();
+    if(obj[i].kill)obj.splice( i,1);
+  }
+}
 
-  //描画の処理
+//オブジェクトを描画
+function drawObj( obj )
+{
+  for(let i=0;i<obj.length;i++)obj[i].draw(); 
+}
+
+//移動の処理
+function updateAll()
+{
+  updateObj(star)
+  updateObj(tama);
+  updateObj(teki);
+  jiki.update();
+}
+
+//描画の処理
+function drawAll()
+{
   vcon.fillStyle="black";
   vcon.fillRect(camera_x,camera_y,SCREEN_W,SCREEN_H);
-  
-  for(let i=0;i<STAR_MAX;i++)star[i].draw();
-  for(let i=0;i<tama.length;i++)tama[i].draw();
-  for(let i=0;i<teki.length;i++)teki[i].draw();
+
+  drawObj( star );
+  drawObj( tama );
+  drawObj( teki );
   jiki.draw();
 
   //自機の範囲0〜FIEL_W
@@ -390,7 +411,11 @@ function gameLoop()
   //仮想画面から実際のキャンバスにコピー
 
   con.drawImage( vcan ,camera_x,camera_y,SCREEN_W,SCREEN_H,0,0,CANVAS_W,CANVAS_H);
+}
 
+//情報の表示
+function putInfo()
+{
   if(DEBUG)
   {
     drawCount++;
@@ -407,9 +432,15 @@ function gameLoop()
     con.fillText("Tama:"+tama.length,20,40);  
     con.fillText("Teki:"+teki.length,20,60);  
   }
-  
 }
 
+//ゲームループ
+function gameLoop()
+{
+  updateAll();
+  drawAll();
+  putInfo();
+}
 
 window.onload = function()
 {
