@@ -8,11 +8,30 @@ class Tama extends CharaBase
   constructor( x,y,vx,vy)
   {
     super( 5,x,y,vx,vy);
+    //this.w = 4;
+    //this.h = 6;
+    this.r = 4;
   }
 
   update()
   {
     super.update();
+    
+    for( let i=0; i<teki.length; i++)
+    {
+      if( !teki[i].kill)
+      {
+        if( checkHit(
+          this.x, this.y, this.r,
+          teki[i].x, teki[i].y, teki[i].r
+        ) )
+        {
+          teki[i].kill=true;
+          this.kill=true;
+          break;
+        }
+      }
+    }
   }
 
   draw()
@@ -28,14 +47,18 @@ class Jiki
   {
     this.x = (FIELD_W/2)<<8;
     this.y = (FIELD_H/2)<<8;
-    this.speed = 512;
-    this.anime = 0;
+    this.speed  = 512;
+    this.anime  = 0;
     this.reload = 0;
-    this.relo2 = 0;
+    this.relo2  = 0;
+    this.r      = 10;
+    this.damage = 0;
   }
 
   update()
   {
+    if(this.damage)this.damage--;
+    
     if(key[32] && this.reload==0 )
       {
         //弾インスタンス生成（発射開始x,発射開始y,移動量x,移動量y）

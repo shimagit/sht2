@@ -56,9 +56,10 @@ let key=[];
 
 //オブジェクト達
 let teki=[];
+let teta=[];
 let tama=[];
 let jiki= new Jiki();
-teki[0]= new Teki( 75, 200<<8,200<<8, 0,0)
+//teki[0]= new Teki( 75, 200<<8,200<<8, 0,0)
 
 //ファイルを読み込み
 let spriteImage = new Image();
@@ -90,21 +91,23 @@ function drawObj( obj )
 //移動の処理
 function updateAll()
 {
-  updateObj(star)
-  updateObj(tama);
-  updateObj(teki);
+  updateObj( star );
+  updateObj( tama );
+  updateObj( teta );
+  updateObj( teki );
   jiki.update();
 }
 
 //描画の処理
 function drawAll()
 {
-  vcon.fillStyle="black";
+  vcon.fillStyle=(jiki.damage)?"red":"black";
   vcon.fillRect(camera_x,camera_y,SCREEN_W,SCREEN_H);
 
   drawObj( star );
   drawObj( tama );
   jiki.draw();
+  drawObj( teta );
   drawObj( teki );
 
   //自機の範囲0〜FIEL_W
@@ -136,12 +139,18 @@ function putInfo()
     con.fillText("FPS :"+fps,20,20);  
     con.fillText("Tama:"+tama.length,20,40);  
     con.fillText("Teki:"+teki.length,20,60);  
+    con.fillText("Teta:"+teta.length,20,80);  
   }
 }
 
 //ゲームループ
 function gameLoop()
 {
+  //テスト的に敵を出す
+
+  if( rand(0,30)==1 )
+    teki.push( new Teki( 39,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
+
   updateAll();
   drawAll();
   putInfo();
