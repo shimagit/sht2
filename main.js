@@ -58,6 +58,7 @@ let key=[];
 let teki=[];
 let teta=[];
 let tama=[];
+let expl=[];
 let jiki= new Jiki();
 //teki[0]= new Teki( 75, 200<<8,200<<8, 0,0)
 
@@ -95,6 +96,7 @@ function updateAll()
   updateObj( tama );
   updateObj( teta );
   updateObj( teki );
+  updateObj( expl );
   jiki.update();
 }
 
@@ -109,6 +111,7 @@ function drawAll()
   jiki.draw();
   drawObj( teta );
   drawObj( teki );
+  drawObj( expl );
 
   //自機の範囲0〜FIEL_W
   //カメラの範囲0〜(FIELD_W-SCREEN_W)

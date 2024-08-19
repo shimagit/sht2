@@ -64,7 +64,7 @@ class Teki extends CharaBase
       dx = Math.cos( an ) * 1000;
       dy = Math.sin( an ) * 1000;
 
-      //teta.push( new Teta( 15, this.x, this.y, dx, dy ) );
+      teta.push( new Teta( 15, this.x, this.y, dx, dy ) );
     }
     if( this.flag && this.vy>-800) this.vy-=30;
 
