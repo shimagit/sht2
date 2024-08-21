@@ -7,7 +7,7 @@ class Tama extends CharaBase
 {
   constructor( x,y,vx,vy)
   {
-    super( 5,x,y,vx,vy);
+    super( 6,x,y,vx,vy);
     //this.w = 4;
     //this.h = 6;
     this.r = 4;
@@ -59,19 +59,23 @@ class Jiki
     this.relo2  = 0;
     this.r      = 10;
     this.damage = 0;
+    this.muteki = 0;
+    this.count = 0;
   }
 
   update()
   {
+    this.count++;
     if(this.damage)this.damage--;
+    if(this.muteki)this.muteki--;
 
     if(key[32] && this.reload==0 )
       {
         //弾インスタンス生成（発射開始x,発射開始y,移動量x,移動量y）
-        tama.push( new Tama(this.x+(4<<8),this.y-(10<<8),   0, -2000));
-        tama.push( new Tama(this.x-(4<<8),this.y-(10<<8),   0, -2000));
-        tama.push( new Tama(this.x+(8<<8),this.y-(10<<8), 400, -2000));
-        tama.push( new Tama(this.x-(8<<8),this.y-(10<<8),-400, -2000));
+        tama.push( new Tama(this.x+(6<<8),this.y-(10<<8),   0, -2000));
+        tama.push( new Tama(this.x-(6<<8),this.y-(10<<8),   0, -2000));
+        tama.push( new Tama(this.x+(8<<8),this.y-(5<<8), 200, -2000));
+        tama.push( new Tama(this.x-(8<<8),this.y-(5<<8),-200, -2000));
         this.reload = 4;
         if(++this.relo2==4)
         {
@@ -105,6 +109,9 @@ class Jiki
 
   draw()
   {
+    if(this.muteki && (this.count&1)) return;
     drawSprite(2 + (this.anime>>2), this.x, this.y);
+    if(this.count&1) return;
+    drawSprite(9 + (this.anime>>2), this.x, this.y+(24<<8));
   }
 }
