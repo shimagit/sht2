@@ -51,8 +51,11 @@ class Jiki
 {
   constructor()
   {
-    this.x = (FIELD_W/2)<<8;
-    this.y = (FIELD_H/2)<<8;
+    this.x  = (FIELD_W/2)<<8;
+    this.y  = (FIELD_H-50)<<8;
+    this.mhp = 100;
+    this.hp = this.mhp;
+    
     this.speed  = 512;
     this.anime  = 0;
     this.reload = 0;
@@ -60,7 +63,7 @@ class Jiki
     this.r      = 10;
     this.damage = 0;
     this.muteki = 0;
-    this.count = 0;
+    this.count  = 0;
   }
 
   update()

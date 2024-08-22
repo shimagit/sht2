@@ -36,6 +36,8 @@ con.mozimageSmoothingEnabled    = SMOOTHING;
 con.webkitimageSmoothingEnabled = SMOOTHING;
 con.msimageSmoothingEnabled     = SMOOTHING;
 con.imageSmoothingEnabled       = SMOOTHING;
+con.font="20px 'Impact'";
+
 
 //フィールド(仮想画面)
 let vcan = document.createElement("canvas"); //表示されないキャンバス
@@ -46,6 +48,10 @@ vcan.height = FIELD_H;
 //カメラの座標
 let camera_x = 0;
 let camera_y = 0;
+
+//
+let gameOver = false;
+let score = 0;
 
 //星の実体
 let star=[];
@@ -97,7 +103,7 @@ function updateAll()
   updateObj( teta );
   updateObj( teki );
   updateObj( expl );
-  jiki.update();
+  if(!gameOver)jiki.update();
 }
 
 //描画の処理
@@ -108,7 +114,7 @@ function drawAll()
 
   drawObj( star );
   drawObj( tama );
-  jiki.draw();
+  if(!gameOver)jiki.draw();
   drawObj( teta );
   drawObj( teki );
   drawObj( expl );
@@ -127,6 +133,23 @@ function drawAll()
 //情報の表示
 function putInfo()
 {
+  con.fillStyle="white";
+
+  if( gameOver )
+  {
+    let s = "GAME OVER";
+    let w = con.measureText(s).width;
+    let x = CANVAS_W/2 - w/2;
+    let y = CANVAS_H/2 - 20;
+    con.fillText(s,x,y);
+    s = "Push 'R' key to restart !";
+    w = con.measureText(s).width;
+    x = CANVAS_W/2 - w/2;
+    y = CANVAS_H/2 - 20+20;
+    con.fillText(s,x,y);
+  }
+
+
   if(DEBUG)
   {
     drawCount++;
@@ -136,13 +159,14 @@ function putInfo()
       drawCount = 0;
       lastTime=Date.now();
     }
-
-    con.font="20px 'Impact'";
-    con.fillStyle="white";
     con.fillText("FPS :"+fps,20,20);  
     con.fillText("Tama:"+tama.length,20,40);  
     con.fillText("Teki:"+teki.length,20,60);  
     con.fillText("Teta:"+teta.length,20,80);  
+    con.fillText("Expl:"+expl.length,20,100);  
+    con.fillText("X:"+(jiki.x>>8),20,120);  
+    con.fillText("Y:"+(jiki.y>>8),20,140);  
+    con.fillText("HP:"+jiki.hp,20,160);  
   }
 }
 
@@ -151,8 +175,11 @@ function gameLoop()
 {
   //テスト的に敵を出す
 
-  if( rand(0,30)==1 )
-    teki.push( new Teki( 39,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
+  if( rand(0,10)==1 )
+  {
+    let r = rand(0,1);
+    teki.push( new Teki( r,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
+  }
 
   updateAll();
   drawAll();

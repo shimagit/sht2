@@ -2,18 +2,6 @@
 // misc.js その他、共通関数
 //
 
-//キーボードが押された時
-document.onkeydown = function(e)
-{
-  key[ e.keyCode ] = true;
-}
-
-//キーボードが離された時
-document.onkeyup = function(e)
-{
-  key[ e.keyCode ] = false;
-}
-
 //キャラクターのベースクラス
 class CharaBase
 {
@@ -85,6 +73,24 @@ function explosion(x,y,vx,vy)
   }
 }
 
+//キーボードが押された時
+document.onkeydown = function(e)
+{
+  key[ e.keyCode ] = true;
+  if( gameOver && e.keyCode==82 )
+  {
+    delete jiki;
+    jiki = new Jiki();
+    gameOver=false;
+    score = 0;
+  }
+}
+
+//キーボードが離された時
+document.onkeyup = function(e)
+{
+  key[ e.keyCode ] = false;
+}
 
 //スプライトを描画する
 function drawSprite( snum, x, y)
