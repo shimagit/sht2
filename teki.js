@@ -6,14 +6,21 @@
 //敵弾クラス
 class Teta extends CharaBase
 {
-  constructor(sn,x,y,vx,vy)
+  constructor(sn,x,y,vx,vy,t)
   {
     super(sn,x,y,vx,vy);
-    this.r = 4;
+    this.r = 3;
+    if (t==undefined )this.timer =0;
+    else this.timer = t;
   }
 
   update()
   {
+    if( this.timer )
+    {
+      this.timer--;
+      return;
+    }
     super.update()
     
     if(!gameOver && !jiki.muteki && checkHit(this.x, this.y, this.r,
@@ -38,14 +45,17 @@ class Teta extends CharaBase
 //敵クラス
 class Teki extends CharaBase
 {
-  constructor( tnum,x,y,vx,vy)
+  constructor( t,x,y,vx,vy)
   {
     super( 0,x,y,vx,vy);
+    this.tnum = tekiMaster[t].tnum;
+    this.r    = tekiMaster[t].r;
+    this.mhp   = tekiMaster[t].hp;
+    this.hp   = this.mhp;
+    this.score= tekiMaster[t].score;
     this.flag = false;
-    //this.w = 20;
-    //this.h = 20;
-    this.r = 10;
-    this.tnum = tnum;
+
+    this.dr   = 90;
   }
 
   update()
@@ -145,7 +155,52 @@ function tekiMove02(obj)
       obj.sn = ptn[ (obj.count>>3)&3 ];
 }
 
+//ボスひよこ（黄色）の移動パターン
+function tekiMove03(obj)
+{
+  if(!obj.flag && (obj.y>>8)>=320 )obj.flag=1;
+
+  if(obj.flag==1)
+  {
+    if((obj.vy-=2)<=0)
+    {
+      obj.flag=2;
+      obj.vy=0;
+    }
+  }
+  else if(obj.flag==2)
+  {
+    if(obj.vx<300)obj.vx+=10;
+    if((obj.x>>8) > (FIELD_W-100))obj.flag=3;
+  }
+  else if(obj.flag==3)
+  {
+    if(obj.vx>-300)obj.vx-=10;
+    if((obj.x>>8) < 100)obj.flag=2;
+  }
+
+  //弾の発射
+
+  if( obj.flag>1 )
+  {
+    let an, dx, dy;
+    an = obj.dr * Math.PI/180;
+    dx = Math.cos( an ) * 300;
+    dy = Math.sin( an ) * 300; 
+    let x2 = (Math.cos( an ) * 70)<<8;
+    let y2 = (Math.sin( an ) * 70)<<8; 
+    teta.push( new Teta( 15, obj.x+x2, obj.y+y2, dx, dy ,60) );
+  
+    if( (obj.dr+=12)>=360 )obj.dr=0;
+  }
+
+      //スプライトの変更
+
+      obj.sn = 75;
+}
+
 let tekiFunc = [
   tekiMove01,
   tekiMove02,
+  tekiMove03,
 ]

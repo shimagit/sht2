@@ -53,6 +53,10 @@ let camera_y = 0;
 let gameOver = false;
 let score = 0;
 
+//
+let bossHP =0;
+let bossMHP =0;
+
 //星の実体
 let star=[];
 
@@ -125,6 +129,16 @@ function drawAll()
   camera_x = (jiki.x>>8)/FIELD_W * (FIELD_W-SCREEN_W);
   camera_y = (jiki.y>>8)/FIELD_H * (FIELD_H-SCREEN_H);
 
+  //ボスのHPを表示する
+
+  if( bossHP>0 )
+  {
+    let sz = (SCREEN_W-20)*bossHP/bossMHP;
+
+    vcon.fillStyle="rgba(255,0,0,0.5)";
+    vcon.fillRect(camera_x+10,camera_y+10,sz,10);
+  }
+
   //仮想画面から実際のキャンバスにコピー
 
   con.drawImage( vcan ,camera_x,camera_y,SCREEN_W,SCREEN_H,0,0,CANVAS_W,CANVAS_H);
@@ -167,6 +181,7 @@ function putInfo()
     con.fillText("X:"+(jiki.x>>8),20,120);  
     con.fillText("Y:"+(jiki.y>>8),20,140);  
     con.fillText("HP:"+jiki.hp,20,160);  
+    con.fillText("SCORE:"+score,20,180);  
   }
 }
 
@@ -174,13 +189,13 @@ function putInfo()
 function gameLoop()
 {
   //テスト的に敵を出す
-
+/*
   if( rand(0,10)==1 )
   {
     let r = rand(0,1);
     teki.push( new Teki( r,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
   }
-
+*/
   updateAll();
   drawAll();
   putInfo();
@@ -189,4 +204,5 @@ function gameLoop()
 window.onload = function()
 {
   gameInit();
+  teki.push( new Teki( 2,(FIELD_W/2)<<8,0,0,200));
 }
