@@ -56,11 +56,13 @@ class Teki extends CharaBase
     this.flag = false;
 
     this.dr   = 90;
+    this.relo = 0;
   }
 
   update()
   {
     //共通のアップデート
+    if(this.relo)this.relo--;
     super.update();
 
     //個別のアップデート
@@ -194,13 +196,62 @@ function tekiMove03(obj)
     if( (obj.dr+=12)>=360 )obj.dr=0;
   }
 
+  //追加攻撃
+  if( obj.hp < obj.mhp/2 )
+  {
+    let c = obj.count%(60*5)
+    if( c/10<4 && c%10==0)
+    {
+      let an, dx, dy;
+      an = 90+45-(c/10)*30 * Math.PI/180;
+      dx = Math.cos( an ) * 300;
+      dy = Math.sin( an ) * 300; 
+      let x2 = (Math.cos( an ) * 70)<<8;
+      let y2 = (Math.sin( an ) * 70)<<8; 
+      teki.push( new Teki( 3, obj.x+x2, obj.y+y2, dx, dy) );
+    
+      if( (obj.dr+=12)>=360 )obj.dr=0;
+    }
+  }
+
       //スプライトの変更
 
       obj.sn = 75;
+}
+
+//ボスひよこの子供
+function tekiMove04(obj)
+{
+  if ( obj.count == 10 )
+  {
+    obj.vx=obj.vy=0;
+  }
+
+  if( obj.count == 60 )
+  {
+    if( obj.x > jiki.x) obj.vx=-30;
+    else obj.vx=30;
+    obj.vy=100;
+  }
+
+  if( obj.count > 100 && !obj.relo )
+  {
+    if( rand(0,100)==1)
+    {
+      tekiShot(obj,300);
+      obj.relo = 200;
+    }
+  }
+
+      //スプライトの変更
+
+      const ptn = [33,34,33,35]
+      obj.sn = ptn[ (obj.count>>3)&3 ];
 }
 
 let tekiFunc = [
   tekiMove01,
   tekiMove02,
   tekiMove03,
+  tekiMove04,
 ]

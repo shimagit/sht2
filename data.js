@@ -18,7 +18,8 @@ let tekiMaster=
 [
   new TekiMaster( 0, 10,     1,   100), //0,ピンクひよこ
   new TekiMaster( 1, 10,     1,   100), //1,黄色ひよこ
-  new TekiMaster( 2, 70, 10000, 10000), //2,ボスひよこ（黄色）
+  new TekiMaster( 2, 70,  5000, 10000), //2,ボスひよこ（黄色）
+  new TekiMaster( 3, 10,     1,    10), //3,ボスひよこ（黄色）の子供
 ]
 
 //スプライトクラス

@@ -133,10 +133,13 @@ function drawAll()
 
   if( bossHP>0 )
   {
-    let sz = (SCREEN_W-20)*bossHP/bossMHP;
+    let sz  = (SCREEN_W-20)*bossHP/bossMHP;
+    let sz2 = (SCREEN_W-20);
 
     vcon.fillStyle="rgba(255,0,0,0.5)";
     vcon.fillRect(camera_x+10,camera_y+10,sz,10);
+    vcon.strokeStyle="rgba(255,0,0,0.9)";
+    vcon.strokeRect(camera_x+10,camera_y+10,sz2,10);
   }
 
   //仮想画面から実際のキャンバスにコピー
