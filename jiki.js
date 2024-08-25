@@ -23,8 +23,7 @@ class Tama extends CharaBase
       {
         if( checkHit(
           this.x, this.y, this.r,
-          teki[i].x, teki[i].y, teki[i].r
-        ) )
+          teki[i].x, teki[i].y, teki[i].r))
         {
           this.kill=true;
 
@@ -33,12 +32,16 @@ class Tama extends CharaBase
             teki[i].kill=true;
             explosion(
               teki[i].x, teki[i].y,
-              teki[i].vx>>3, teki[i].vy>>3 );
+              teki[i].vx>>3, teki[i].vy>>3 ); 
             score += teki[i].score;
+            if(!rand(0,5))
+            {
+              item.push(new Item(50, this.x, this.y, 0, 200))
+            }
           }
           else
           {
-            expl.push(new Expl(0,this.x,this  .y,0,0))
+            expl.push(new Expl( 0, this.x, this.y, 0, 0))
           }
           if( teki[i].mhp>=1000 )
             {

@@ -30,6 +30,40 @@ class CharaBase
     drawSprite(this.sn, this.x, this.y);
   }
 }
+// item
+class Item extends CharaBase
+{
+  constructor( c,x,y,vx,vy)
+  {
+    super(0,x,y,vx,vy);
+    this. y = y;
+    this.vy= vy; 
+    this.r = 10;
+  }
+  update()
+  {
+    this.y += this.vy;
+    super.update();
+     //当たり判定
+
+     if(!gameOver && !jiki.muteki && checkHit(this.x, this.y, this.r,
+      jiki.x, jiki.y, jiki.r) )
+    {
+      this.kill =true;
+      jiki.speed += 100;
+    }
+  }
+  draw()
+  {
+    this.sn = 63 + (this.count>>2);
+    if( this.sn > 67 )
+      {
+        this.count = 0;
+        this.sn = 63  ;
+      }
+      super.draw();
+  } 
+}
 
 //爆発のクラス
 class Expl extends CharaBase

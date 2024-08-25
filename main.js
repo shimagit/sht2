@@ -1,5 +1,5 @@
 //デバッグフラグ
-const DEBUG = false;
+const DEBUG = true;
 
 let drawCount=0;
 let fps=0;
@@ -70,6 +70,7 @@ let teki=[];
 let teta=[];
 let tama=[];
 let expl=[];
+let item=[];
 let jiki= new Jiki();
 //teki[0]= new Teki( 75, 200<<8,200<<8, 0,0)
 
@@ -108,6 +109,7 @@ function updateAll()
   updateObj( teta );
   updateObj( teki );
   updateObj( expl );
+  updateObj( item );
   if(!gameOver)jiki.update();
 }
 
@@ -123,6 +125,7 @@ function drawAll()
   drawObj( teki );
   drawObj( expl );
   drawObj( teta );
+  drawObj( item );
   
   //自機の範囲0〜FIEL_W
   //カメラの範囲0〜(FIELD_W-SCREEN_W)
@@ -203,6 +206,7 @@ function putInfo()
     con.fillText("SCORE:"+score,20,180);  
     con.fillText("COUNT:"+gameCount,20,200);  
     con.fillText("WAVE:"+gameWave,20,220);  
+    con.fillText("ITEM:"+item.length,20,240);  
   }
 }
 
