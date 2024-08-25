@@ -39,6 +39,7 @@ class Item extends CharaBase
     this. y = y;
     this.vy= vy; 
     this.r = 10;
+    this.effect = rand(0,2);
   }
   update()
   {
@@ -50,12 +51,19 @@ class Item extends CharaBase
       jiki.x, jiki.y, jiki.r) )
     {
       this.kill =true;
-      jiki.speed += 100;
+      if(this.effect==0)
+      {
+        jiki.speed += 100;
+      }
+      else
+      {
+        jiki.speed -= 100;
+      }
     }
   }
   draw()
   {
-    this.sn = 63 + (this.count>>2);
+    this.sn = 63 + (this.count>>2) - (this.effect * 6);
     if( this.sn > 67 )
       {
         this.count = 0;

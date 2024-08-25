@@ -78,6 +78,7 @@ class Jiki
     this.damage = 0;
     this.muteki = 0;
     this.count  = 0;
+    this.power  = 0;
   }
 
   update()
@@ -89,10 +90,17 @@ class Jiki
     if(key[32] && this.reload==0 )
       {
         //弾インスタンス生成（発射開始x,発射開始y,移動量x,移動量y）
-        tama.push( new Tama(this.x+(6<<8),this.y-(10<<8),   0, -2000));
-        tama.push( new Tama(this.x-(6<<8),this.y-(10<<8),   0, -2000));
-        tama.push( new Tama(this.x+(8<<8),this.y-(5<<8), 200, -2000));
-        tama.push( new Tama(this.x-(8<<8),this.y-(5<<8),-200, -2000));
+        if(this.power = 1)
+        {
+          tama.push( new Tama(this.x,this.y,   0, -2000));
+        }
+        else
+        {
+          tama.push( new Tama(this.x+(6<<8),this.y-(10<<8),  0, -2000));
+          tama.push( new Tama(this.x-(6<<8),this.y-(10<<8),  0, -2000));
+          tama.push( new Tama(this.x+(8<<8),this.y-(5<<8), 200, -2000));
+          tama.push( new Tama(this.x-(8<<8),this.y-(5<<8),-200, -2000));
+        }
         this.reload = 4;
         if(++this.relo2==4)
         {
