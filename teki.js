@@ -74,7 +74,7 @@ class Teki extends CharaBase
     if(!gameOver && !jiki.muteki && checkHit(this.x, this.y, this.r,
       jiki.x, jiki.y, jiki.r) )
     {
-      this.kill=true;
+      if( this.mhp<500) this.kill =true;
       if((jiki.hp -=30)<=0 )
       {
         gameOver = true;
@@ -93,10 +93,17 @@ class Teki extends CharaBase
   }
 }
 
-//弾を時期に向けて発射する
+//弾を自機に向けて発射する
 function tekiShot(obj,speed)
 {
   if(gameOver)return;
+
+  let px = (obj.x>>8);
+  let py = (obj.y>>8);
+
+  if ( px-40 < camera_x || px+40 >= camera_x+SCREEN_W ||
+       py-40 < camera_y || py+40 >= camera_y+SCREEN_H ) return;
+
   let an, dx, dy;
   an = Math.atan2( jiki.y - obj.y, jiki.x - obj.x );
   dx = Math.cos( an ) * speed;

@@ -21,8 +21,8 @@ class CharaBase
     this.count++;
     this.x += this.vx;
     this.y += this.vy;
-    if( this.x<0 || this.x>FIELD_W<<8 ||
-      this.y<0 || this.y>FIELD_H<<8 ) this.kill = true;
+    if( this.x+(100<<8)<0 || this.x-(100<<8) >FIELD_W<<8 ||
+      this.y+(100<<8)<0 || this.y-(100<<8) >FIELD_H<<8 ) this.kill = true;
   }
 
   draw()
@@ -124,7 +124,7 @@ class Star
     this.x = rand(0,FIELD_W)<<8;
     this.y = rand(0,FIELD_H)<<8;
     this.vx = 0;
-    this.vy = rand(30,200);
+    this.vy = rand(100,300);
     this.sz = rand(1,2);
   }
 
@@ -142,8 +142,8 @@ class Star
 
   update()
   {
-    this.x += this.vx;
-    this.y += this.vy;
+    this.x += this.vx * starSpeed/100;
+    this.y += this.vy * starSpeed/100;
     if( this.y>FIELD_H<<8 )
     {
       this.y = 0;
