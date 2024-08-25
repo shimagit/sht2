@@ -55,9 +55,13 @@ class Item extends CharaBase
       {
         jiki.speed += 100;
       }
+      else if(this.effect==1)
+      {
+        jiki.power += 1;
+      }
       else
       {
-        jiki.speed -= 100;
+        jiki.hp +=30;
       }
     }
   }

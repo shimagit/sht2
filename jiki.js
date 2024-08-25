@@ -90,16 +90,45 @@ class Jiki
     if(key[32] && this.reload==0 )
       {
         //弾インスタンス生成（発射開始x,発射開始y,移動量x,移動量y）
-        if(this.power = 1)
+        if(this.power == 0)
         {
           tama.push( new Tama(this.x,this.y,   0, -2000));
         }
-        else
+        else if(this.power == 1 )
+        {
+          tama.push( new Tama(this.x+(6<<8),this.y-(10<<8),  0, -2000));
+          tama.push( new Tama(this.x-(6<<8),this.y-(10<<8),  0, -2000));
+        }
+        else if(this.power == 2 )
+        {
+          tama.push( new Tama(this.x,this.y,   0, -2000));
+          tama.push( new Tama(this.x+(6<<8),this.y,  150, -2000));
+          tama.push( new Tama(this.x-(6<<8),this.y, -150, -2000));
+        }
+        else if(this.power == 3 )
         {
           tama.push( new Tama(this.x+(6<<8),this.y-(10<<8),  0, -2000));
           tama.push( new Tama(this.x-(6<<8),this.y-(10<<8),  0, -2000));
           tama.push( new Tama(this.x+(8<<8),this.y-(5<<8), 200, -2000));
           tama.push( new Tama(this.x-(8<<8),this.y-(5<<8),-200, -2000));
+        }
+        else  if(this.power == 4 )
+        {
+          tama.push( new Tama(this.x,this.y,   0, -2000));
+          tama.push( new Tama(this.x+(6<<8),this.y, 150, -2000));
+          tama.push( new Tama(this.x-(6<<8),this.y,-150, -2000));
+          tama.push( new Tama(this.x+(8<<8),this.y-(10<<8), 300, -2000));
+          tama.push( new Tama(this.x-(8<<8),this.y-(10<<8),-300, -2000));
+        }
+        else
+        {
+        tama.push( new Tama(this.x,this.y,   0, -2000));
+        tama.push( new Tama(this.x+(6<<8),this.y, 150, -2000));
+        tama.push( new Tama(this.x-(6<<8),this.y,-150, -2000));
+        tama.push( new Tama(this.x+(8<<8),this.y-(10<<8), 300, -2000));
+        tama.push( new Tama(this.x-(8<<8),this.y-(10<<8),-300, -2000));
+        tama.push( new Tama(this.x+(8<<8),this.y-(10<<8), 500, -2000));
+        tama.push( new Tama(this.x-(8<<8),this.y-(10<<8),-500, -2000));
         }
         this.reload = 4;
         if(++this.relo2==4)
