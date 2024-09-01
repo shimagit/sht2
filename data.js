@@ -128,4 +128,24 @@ let sprite = [
 	new Sprite(337,  0,139,147),//75  ,黄色(大)
 	new Sprite(336,151,139,147),//76  ,ピンク(大)
 	new Sprite(336,301,139,155),//77  ,青グラサン(大)
+	 
+	new Sprite(  0,416, 16, 16),//78  ,Power up p1
+	new Sprite( 16,416, 16, 16),//79  ,Power up p2
+	new Sprite( 32,416, 16, 16),//80  ,Power up p3
+
+	new Sprite( 48,416, 16, 16),//81  ,Speed up p1
+	new Sprite( 64,416, 16, 16),//82  ,Speed up p2
+	new Sprite( 80,416, 16, 16),//83  ,Speed up p3
+
+	new Sprite( 96,416, 16, 16),//84  ,Laser p1
+	new Sprite(112,416, 16, 16),//85  ,Laser p2
+	new Sprite(128,416, 16, 16),//86  ,Laser p3
+
+	new Sprite(144,416, 16, 16),//87  ,Shield p1
+	new Sprite(160,416, 16, 16),//88  ,Shield p2
+	new Sprite(176,416, 16, 16),//89  ,Shield p3
+
+	new Sprite(192,416, 16, 16),//90  ,Bomb p1
+	new Sprite(208,416, 16, 16),//91  ,Bomb p2
+	new Sprite(224,416, 16, 16),//92  ,Bomb p3
 ];

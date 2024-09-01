@@ -39,7 +39,7 @@ class Item extends CharaBase
     this. y = y;
     this.vy= vy; 
     this.r = 10;
-    this.effect = rand(0,2);
+    this.effect = rand(0,4);
   }
   update()
   {
@@ -67,12 +67,12 @@ class Item extends CharaBase
   }
   draw()
   {
-    this.sn = 63 + (this.count>>2) - (this.effect * 6);
-    if( this.sn > 67 )
+    this.sn = (78 + this.effect * 3 )  + (this.count>>2);
+    if( this.sn > (78 + this.effect * 3 + 2)  )
       {
         this.count = 0;
-        this.sn = 63  ;
-      }
+        this.sn = (78 + this.effect * 3 )  ;
+          }
       super.draw();
   } 
 }
