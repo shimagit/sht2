@@ -56,18 +56,26 @@ class Item extends CharaBase
       jiki.powerMessageCount = jiki.count; 
       if(this.effect==0)
       {
+        jiki.power += 1;
+        jiki.powerMessage ="Power UP !"
+      }
+      else if(this.effect==1)
+      {
         jiki.speed += 100;
         jiki.powerMessage ="SPEED UP !"
       }
-      else if(this.effect==1)
+      else if(this.effect==2)
+      {
+        jiki.powerMessage ="Leaser Beem !"
+      }
+      else if(this.effect==3)
         {
-          jiki.power += 1;
-          jiki.powerMessage ="Power UP !"
-        }
-        else
-        {
-          jiki.hp +=30;
-          jiki.powerMessage ="Sheeld UP !"
+        jiki.hp +=30;
+        jiki.powerMessage ="Sheeld UP !"
+      }
+      else
+      {
+        jiki.powerMessage ="Bomber !"
       }
     }
   }
