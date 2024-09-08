@@ -79,6 +79,9 @@ class Jiki
     this.muteki = 0;
     this.count  = 0;
     this.power  = 0;
+    this.powerMessage = "";
+    this.powerMessageCount = 0;
+    this.powerFlag = false
   }
 
   update()

@@ -160,6 +160,15 @@ function drawAll()
   //スコア表示
   vcon.fillStyle = "white";
   vcon.fillText("SCORE "+score,camera_x+10,camera_y+14 );
+  
+  //power up message
+  if(jiki.powerFlag)
+  {
+     vcon.fillText(jiki.powerMessage,(jiki.x>>8)-10,(jiki.y>>8)-(jiki.count-jiki.powerMessageCount));
+     if(jiki.count > jiki.powerMessageCount + 100)
+      {jiki.powerFlag = false;}  
+  }
+ 
 
   //仮想画面から実際のキャンバスにコピー
 
@@ -206,7 +215,9 @@ function putInfo()
     con.fillText("SCORE:"+score,20,180);  
     con.fillText("COUNT:"+gameCount,20,200);  
     con.fillText("WAVE:"+gameWave,20,220);  
-    con.fillText("ITEM:"+item.length,20,240);  
+    con.fillText("ITEM:"+item.length,20,240); 
+
+    //con.fillText("Power up !",jiki.x>>8,jiki.y>>8);  
   }
 }
 

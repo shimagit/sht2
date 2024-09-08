@@ -51,17 +51,23 @@ class Item extends CharaBase
       jiki.x, jiki.y, jiki.r) )
     {
       this.kill =true;
+      explosion(this.x, this.y,100,100);
+      jiki.powerFlag = true;
+      jiki.powerMessageCount = jiki.count; 
       if(this.effect==0)
       {
         jiki.speed += 100;
+        jiki.powerMessage ="SPEED UP !"
       }
       else if(this.effect==1)
-      {
-        jiki.power += 1;
-      }
-      else
-      {
-        jiki.hp +=30;
+        {
+          jiki.power += 1;
+          jiki.powerMessage ="Power UP !"
+        }
+        else
+        {
+          jiki.hp +=30;
+          jiki.powerMessage ="Sheeld UP !"
       }
     }
   }
