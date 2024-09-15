@@ -1,4 +1,4 @@
-シューティングゲーム作るよ ！
+Shooting game making
 ===
 ...
 
@@ -7,6 +7,6 @@ Author : shimanuki.takayoshi
 ...
 
 # Summary
-- 作成開始      2024.08.01
-- 基本部分完成  2024.09.01
-# Tetris
+- start           2024.08.01
+- base finish     2024.09.01
+- power up add    2024.09.14
