@@ -76,6 +76,21 @@ class Item extends CharaBase
       else
       {
         jiki.powerMessage ="Bomber !"
+        for(let i=0; i < teki.length; i++)
+          {
+            if((teki[i].hp-=10)<=0)
+              {
+                teki[i].kill=true;
+                explosion(
+                  teki[i].x, teki[i].y,
+                  teki[i].vx>>3, teki[i].vy>>3 ); 
+                score += teki[i].score;
+              }
+              else
+              {
+                expl.push(new Expl( 0, this.x, this.y, 0, 0))
+              }
+          }
       }
     }
   }
