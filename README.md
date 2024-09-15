@@ -11,3 +11,4 @@ Author : shimanuki.takayoshi
 - base finish     2024.09.01
 - power up add    2024.09.14
 - Laser add       2024.09.14
+- weapon change   2024.09.14

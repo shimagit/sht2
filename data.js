@@ -149,10 +149,14 @@ let sprite = [
 	new Sprite(208,416, 16, 16),//91  ,Bomb p2
 	new Sprite(224,416, 16, 16),//92  ,Bomb p3
 
-	new Sprite(  0,432, 3, 32),//93,leaser 1
-	new Sprite(  4,432, 6, 32),//94,leaser 2
-	new Sprite( 11,432, 9, 32),//95,leaser 3
-	new Sprite( 21,432,12, 32),//96,leaser 4
-	new Sprite( 34,432,15, 32),//97,leaser 5
+	new Sprite(240,416, 16, 16),//93  ,Tama p1
+	new Sprite(256,416, 16, 16),//94  ,Tama p2
+	new Sprite(272,416, 16, 16),//95  ,Tama p3
+
+	new Sprite(  0,432, 3, 32),//96		,leaser 1
+	new Sprite(  4,432, 6, 32),//97		,leaser 2
+	new Sprite( 11,432, 9, 32),//98		,leaser 3
+	new Sprite( 21,432,12, 32),//99		,leaser 4
+	new Sprite( 34,432,15, 32),//100	,leaser 5
 
 ];

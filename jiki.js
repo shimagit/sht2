@@ -44,11 +44,11 @@ class Tama extends CharaBase {
 
   draw() {
     if (jiki.weapon == 1) {
-      if (jiki.power == 0) this.sn = 93;
-      if (jiki.power == 1) this.sn = 94;
-      if (jiki.power == 2) this.sn = 95;
-      if (jiki.power == 3) this.sn = 96;
-      if (jiki.power >= 4) this.sn = 97;
+      if (jiki.power == 0) this.sn = 96;
+      if (jiki.power == 1) this.sn = 97;
+      if (jiki.power == 2) this.sn = 98;
+      if (jiki.power == 3) this.sn = 99;
+      if (jiki.power >= 4) this.sn = 100;
     }
     super.draw();
   }

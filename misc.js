@@ -3,11 +3,9 @@
 //
 
 //キャラクターのベースクラス
-class CharaBase
-{
-  constructor( snum,x,y, vx,vy)
-  {
-    this.sn =snum;
+class CharaBase {
+  constructor(snum, x, y, vx, vy) {
+    this.sn = snum;
     this.x = x;
     this.y = y;
     this.vx = vx;
@@ -16,229 +14,204 @@ class CharaBase
     this.count = 0;
   }
 
-  update()
-  {
+  update() {
     this.count++;
     this.x += this.vx;
     this.y += this.vy;
-    if( this.x+(100<<8)<0 || this.x-(100<<8) >FIELD_W<<8 ||
-      this.y+(100<<8)<0 || this.y-(100<<8) >FIELD_H<<8 ) this.kill = true;
+    if (
+      this.x + (100 << 8) < 0 ||
+      this.x - (100 << 8) > FIELD_W << 8 ||
+      this.y + (100 << 8) < 0 ||
+      this.y - (100 << 8) > FIELD_H << 8
+    )
+      this.kill = true;
   }
 
-  draw()
-  {
+  draw() {
     drawSprite(this.sn, this.x, this.y);
   }
 }
 // item
-class Item extends CharaBase
-{
-  constructor( c,x,y,vx,vy)
-  {
-    super(0,x,y,vx,vy);
-    this. y = y;
-    this.vy= vy; 
+class Item extends CharaBase {
+  constructor(c, x, y, vx, vy) {
+    super(0, x, y, vx, vy);
+    this.y = y;
+    this.vy = vy;
     this.r = 10;
-    this.effect = rand(0,4);
+    this.effect = rand(0, 5);
   }
-  update()
-  {
+  update() {
     this.y += this.vy;
     super.update();
-     //当たり判定
+    //当たり判定
 
-     if(!gameOver && !jiki.muteki && checkHit(this.x, this.y, this.r,
-      jiki.x, jiki.y, jiki.r) )
-    {
-      this.kill =true;
-      explosion(this.x, this.y,100,100);
+    if (
+      !gameOver &&
+      !jiki.muteki &&
+      checkHit(this.x, this.y, this.r, jiki.x, jiki.y, jiki.r)
+    ) {
+      this.kill = true;
+      explosion(this.x, this.y, 100, 100);
       jiki.powerFlag = true;
-      jiki.powerMessageCount = jiki.count; 
-      if(this.effect==0)
-      {
+      jiki.powerMessageCount = jiki.count;
+      if (this.effect == 0) {
         jiki.power += 1;
-        jiki.weapon = 0;
-        jiki.powerMessage ="Power UP !"
-      }
-      else if(this.effect==1)
-      {
+        jiki.powerMessage = "Power UP !";
+      } else if (this.effect == 1) {
         jiki.speed += 100;
-        jiki.powerMessage ="SPEED UP !"
-      }
-      else if(this.effect==2)
-      {
-        jiki.powerMessage ="Leaser Beem !"
+        jiki.powerMessage = "SPEED UP !";
+      } else if (this.effect == 2) {
         jiki.weapon = 1;
-      }
-      else if(this.effect==3)
-        {
-        jiki.hp +=30;
-        jiki.powerMessage ="Sheeld UP !"
-      }
-      else
-      {
-        jiki.powerMessage ="Bomber !"
-        for(let i=0; i < teki.length; i++)
-          {
-            if((teki[i].hp-=10)<=0)
-              {
-                teki[i].kill=true;
-                explosion(
-                  teki[i].x, teki[i].y,
-                  teki[i].vx>>3, teki[i].vy>>3 ); 
-                score += teki[i].score;
-              }
-              else
-              {
-                expl.push(new Expl( 0, this.x, this.y, 0, 0))
-              }
+        jiki.powerMessage = "Leaser Beem !";
+      } else if (this.effect == 3) {
+        jiki.hp += 30;
+        jiki.powerMessage = "Sheeld UP !";
+      } else if (this.effect == 4) {
+        jiki.powerMessage = "Bomber !";
+        for (let i = 0; i < teki.length; i++) {
+          if ((teki[i].hp -= 10) <= 0) {
+            teki[i].kill = true;
+            explosion(teki[i].x, teki[i].y, teki[i].vx >> 3, teki[i].vy >> 3);
+            score += teki[i].score;
+          } else {
+            expl.push(new Expl(0, this.x, this.y, 0, 0));
           }
+        }
+      } else {
+        jiki.weapon = 0;
+        jiki.powerMessage = "Tama Shot !";
       }
     }
   }
-  draw()
-  {
-    this.sn = (78 + this.effect * 3 )  + (this.count>>2);
-    if( this.sn > (78 + this.effect * 3 + 2)  )
-      {
-        this.count = 0;
-        this.sn = (78 + this.effect * 3 )  ;
-          }
-      super.draw();
-  } 
+  draw() {
+    this.sn = 78 + this.effect * 3 + (this.count >> 2);
+    if (this.sn > 78 + this.effect * 3 + 2) {
+      this.count = 0;
+      this.sn = 78 + this.effect * 3;
+    }
+    super.draw();
+  }
 }
 
 //爆発のクラス
-class Expl extends CharaBase
-{
-  constructor( c,x,y,vx,vy)
-  {
-    super(0,x,y,vx,vy);
+class Expl extends CharaBase {
+  constructor(c, x, y, vx, vy) {
+    super(0, x, y, vx, vy);
     this.timer = c;
   }
-  update()
-  {
-    if(this.timer)
-    {
+  update() {
+    if (this.timer) {
       this.timer--;
       return;
     }
     super.update();
   }
-  draw()
-  {
-    if(this.timer)return;
-    this.sn = 16 + (this.count>>2);
-    if( this.sn==27 )
-      {
-        this.kill = true;
-        return;
-      }
-      super.draw();
+  draw() {
+    if (this.timer) return;
+    this.sn = 16 + (this.count >> 2);
+    if (this.sn == 27) {
+      this.kill = true;
+      return;
+    }
+    super.draw();
   }
 }
 
 //もっと派手な爆発
-function explosion(x,y,vx,vy)
-{
-  expl.push( new Expl(0,x,y,vx,vy));
-  for(let i=0;i<10;i++)
-  {
-    let evx = vx+(rand(-10,10)<<6);
-    let evy = vy+(rand(-10,10)<<6);
-    expl.push( new Expl( i,x,y,evx,evy ));
+function explosion(x, y, vx, vy) {
+  expl.push(new Expl(0, x, y, vx, vy));
+  for (let i = 0; i < 10; i++) {
+    let evx = vx + (rand(-10, 10) << 6);
+    let evy = vy + (rand(-10, 10) << 6);
+    expl.push(new Expl(i, x, y, evx, evy));
   }
 }
 
 //キーボードが押された時
-document.onkeydown = function(e)
-{
-  key[ e.keyCode ] = true;
-  if( gameOver && e.keyCode==82 )
-  {
+document.onkeydown = function (e) {
+  key[e.keyCode] = true;
+  if (gameOver && e.keyCode == 82) {
     delete jiki;
     jiki = new Jiki();
-    gameOver=false;
+    gameOver = false;
     score = 0;
   }
-}
+};
 
 //キーボードが離された時
-document.onkeyup = function(e)
-{
-  key[ e.keyCode ] = false;
-}
+document.onkeyup = function (e) {
+  key[e.keyCode] = false;
+};
 
 //スプライトを描画する
-function drawSprite( snum, x, y)
-{
+function drawSprite(snum, x, y) {
   let sx = sprite[snum].x;
   let sy = sprite[snum].y;
   let sw = sprite[snum].w;
   let sh = sprite[snum].h;
 
-  let px = (x>>8) - sw/2;
-  let py = (y>>8) - sh/2;
+  let px = (x >> 8) - sw / 2;
+  let py = (y >> 8) - sh / 2;
 
-  if ( px+sw<camera_x || px>=camera_x+SCREEN_W ||
-    py+sh<camera_y || py>=camera_y+SCREEN_H ) return;
+  if (
+    px + sw < camera_x ||
+    px >= camera_x + SCREEN_W ||
+    py + sh < camera_y ||
+    py >= camera_y + SCREEN_H
+  )
+    return;
 
-
-  vcon.drawImage( spriteImage, sx,sy,sw,sh,px,py,sw,sh)
+  vcon.drawImage(spriteImage, sx, sy, sw, sh, px, py, sw, sh);
 }
 
 //整数の乱数を作る
-function rand(min,max)
-{
-  return Math.floor( Math.random()*(max-min+1))+min;
+function rand(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 //星クラス
-class Star
-{
-  constructor()
-  {
-    this.x = rand(0,FIELD_W)<<8;
-    this.y = rand(0,FIELD_H)<<8;
+class Star {
+  constructor() {
+    this.x = rand(0, FIELD_W) << 8;
+    this.y = rand(0, FIELD_H) << 8;
     this.vx = 0;
-    this.vy = rand(100,300);
-    this.sz = rand(1,2);
+    this.vy = rand(100, 300);
+    this.sz = rand(1, 2);
   }
 
-  draw()
-  {
-    let x = this.x>>8;
-    let y = this.y>>8;
-    if ( x<camera_x || x>=camera_x+SCREEN_W ||
-         y<camera_y || y>=camera_y+SCREEN_H ) return;
-    
-    vcon.fillStyle=rand(0,2) !=0?"#66f":"#aef";
-    vcon.fillRect(x,y,this.sz,this.sz)
+  draw() {
+    let x = this.x >> 8;
+    let y = this.y >> 8;
+    if (
+      x < camera_x ||
+      x >= camera_x + SCREEN_W ||
+      y < camera_y ||
+      y >= camera_y + SCREEN_H
+    )
+      return;
 
+    vcon.fillStyle = rand(0, 2) != 0 ? "#66f" : "#aef";
+    vcon.fillRect(x, y, this.sz, this.sz);
   }
 
-  update()
-  {
-    this.x += this.vx * starSpeed/100;
-    this.y += this.vy * starSpeed/100;
-    if( this.y>FIELD_H<<8 )
-    {
+  update() {
+    this.x += (this.vx * starSpeed) / 100;
+    this.y += (this.vy * starSpeed) / 100;
+    if (this.y > FIELD_H << 8) {
       this.y = 0;
-      this.x = rand(0,FIELD_W)<<8;
+      this.x = rand(0, FIELD_W) << 8;
     }
   }
 }
 
 //当たり判定
-function checkHit( x1,y1,r1, x2,y2,r2)
-{
-//円同士の判定
-let a = (x2-x1)>>8;
-let b = (y2-y1)>>8;
-let r = r1+r2;
+function checkHit(x1, y1, r1, x2, y2, r2) {
+  //円同士の判定
+  let a = (x2 - x1) >> 8;
+  let b = (y2 - y1) >> 8;
+  let r = r1 + r2;
 
-return r*r >= a*a + b*b;
-
+  return r * r >= a * a + b * b;
 
   //矩形同士の判定
   /*
@@ -258,5 +231,3 @@ return r*r >= a*a + b*b;
           bottom1 >= top2 );
   */
 }
-
-
