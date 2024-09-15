@@ -216,6 +216,8 @@ function putInfo()
     con.fillText("COUNT:"+gameCount,20,200);  
     con.fillText("WAVE:"+gameWave,20,220);  
     con.fillText("ITEM:"+item.length,20,240); 
+    con.fillText("WEAPON:"+jiki.weapon,20,260); 
+    con.fillText("POWER:"+jiki.power,20,280); 
 
     //con.fillText("Power up !",jiki.x>>8,jiki.y>>8);  
   }

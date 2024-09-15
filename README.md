@@ -10,3 +10,4 @@ Author : shimanuki.takayoshi
 - start           2024.08.01
 - base finish     2024.09.01
 - power up add    2024.09.14
+- Laser add       2024.09.14

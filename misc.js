@@ -57,6 +57,7 @@ class Item extends CharaBase
       if(this.effect==0)
       {
         jiki.power += 1;
+        jiki.weapon = 0;
         jiki.powerMessage ="Power UP !"
       }
       else if(this.effect==1)
@@ -67,6 +68,7 @@ class Item extends CharaBase
       else if(this.effect==2)
       {
         jiki.powerMessage ="Leaser Beem !"
+        jiki.weapon = 1;
       }
       else if(this.effect==3)
         {
