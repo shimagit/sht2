@@ -1,6 +1,24 @@
 //デバッグフラグ
 const DEBUG = true;
 
+//`音量設定
+let soundVolume = 0.2;
+
+//効果音設定
+se1 = new Audio("se1.wav"); //落下
+se2 = new Audio("se2.wav"); //回転
+se3 = new Audio("se3.wav"); //消した時
+se4 = new Audio("Tetris_bgm.mp3");
+se5 = new Audio("gameover.mp3");
+se1.volume = soundVolume * 4;
+se2.volume = soundVolume / 5;
+se3.volume = soundVolume * 4;
+se4.volume = soundVolume / 5;
+se5.volume = soundVolume / 5;
+se1.playbackRate = 5;
+se2.playbackRate = 10;
+se3.playbackRate = 2;
+
 let drawCount=0;
 let fps=0;
 let lastTime=Date.now();
@@ -192,6 +210,7 @@ function putInfo()
     x = CANVAS_W/2 - w/2;
     y = CANVAS_H/2 - 20+20;
     con.fillText(s,x,y);
+    document.getElementById("RETRY").style.display=("block");
   }
 
 
@@ -299,6 +318,17 @@ function gameLoop()
 
 window.onload = function()
 {
-  gameInit();
-  // teki.push( new Teki( 2,(FIELD_W/2)<<8,0,0,200));
+  const button_start = document.getElementById('START');
+  const button_retry = document.getElementById('RETRY');
+  button_start.addEventListener('click', function(){
+    startGame();
+  });
+  button_retry.addEventListener('click', function(){
+    startGame();
+  });
+  function startGame(){
+    gameInit();
+    document.getElementById("START").style.display=("none");
+    document.getElementById("RETRY").style.display=("none");
+  }
 }
