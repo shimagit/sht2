@@ -69,6 +69,7 @@ let camera_x = 0;
 let camera_y = 0;
 
 //
+let gameStart = false;
 let gameOver = false;
 let score = 0;
 
@@ -177,7 +178,7 @@ function drawAll()
     }
   //スコア表示
   vcon.fillStyle = "white";
-  vcon.fillText("SCORE "+score,camera_x+10,camera_y+14 );
+  vcon.fillText("SCORE "+score,camera_x+100,camera_y+14 );
   
   //power up message
   if(jiki.powerFlag)
@@ -200,6 +201,7 @@ function putInfo()
 
   if( gameOver )
   {
+    if( gameStart ){
     let s = "GAME OVER";
     let w = con.measureText(s).width;
     let x = CANVAS_W/2 - w/2;
@@ -210,7 +212,10 @@ function putInfo()
     x = CANVAS_W/2 - w/2;
     y = CANVAS_H/2 - 20+20;
     con.fillText(s,x,y);
-    document.getElementById("RETRY").style.display=("block");
+      document.getElementById("RETRY").style.display=("block");
+    } else {
+      document.getElementById("START").style.display=("block");
+    }
   }
 
 
@@ -318,13 +323,22 @@ function gameLoop()
 
 window.onload = function()
 {
+  gameOver = true;
   const button_start = document.getElementById('START');
   const button_retry = document.getElementById('RETRY');
+  startGame();
   button_start.addEventListener('click', function(){
-    startGame();
+    document.getElementById("START").style.display=("none");
+    gameStart = true;
+    retry()
   });
   button_retry.addEventListener('click', function(){
-    startGame();
+    retry();
+    //delete jiki;
+    //jiki = new Jiki();
+    //gameOver = false;
+    //score = 0;
+    //startGame();
   });
   function startGame(){
     gameInit();

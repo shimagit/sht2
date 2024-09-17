@@ -131,12 +131,21 @@ function explosion(x, y, vx, vy) {
 document.onkeydown = function (e) {
   key[e.keyCode] = true;
   if (gameOver && e.keyCode == 82) {
-    delete jiki;
-    jiki = new Jiki();
-    gameOver = false;
-    score = 0;
+    retry();
+    //delete jiki;
+    //jiki = new Jiki();
+    //gameOver = false;
+    //score = 0;
   }
 };
+
+function retry(){
+  document.getElementById("RETRY").style.display=("none");
+  delete jiki;
+  jiki = new Jiki();
+  gameOver = false;
+  score = 0;
+}
 
 //キーボードが離された時
 document.onkeyup = function (e) {
