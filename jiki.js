@@ -23,6 +23,8 @@ class Tama extends CharaBase {
           this.kill = true;
 
           if ((teki[i].hp -= 10) <= 0) {
+            se7.pause();
+            se7.play();
             teki[i].kill = true;
             explosion(teki[i].x, teki[i].y, teki[i].vx >> 3, teki[i].vy >> 3);
             score += teki[i].score;
@@ -83,6 +85,8 @@ class Jiki {
     if (this.muteki) this.muteki--;
 
     if (key[32] && this.reload == 0) {
+      se6.pause();
+      se6.play();
       //弾インスタンス生成（発射開始x,発射開始y,移動量x,移動量y）
       if (this.weapon == 0) {
         if (this.power == 0) {

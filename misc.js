@@ -60,6 +60,8 @@ class Item extends CharaBase {
       } else if (this.effect == 1) {
         jiki.speed += 100;
         jiki.powerMessage = "SPEED UP !";
+        se9.pause();
+        se9.play();
       } else if (this.effect == 2) {
         jiki.weapon = 1;
         jiki.powerMessage = "Leaser Beem !";
@@ -68,6 +70,8 @@ class Item extends CharaBase {
         jiki.powerMessage = "Sheeld UP !";
       } else if (this.effect == 4) {
         jiki.powerMessage = "Bomber !";
+        se8.pause();
+        se8.play();
         for (let i = 0; i < teki.length; i++) {
           if ((teki[i].hp -= 10) <= 0) {
             teki[i].kill = true;
