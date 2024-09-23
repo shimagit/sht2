@@ -50,15 +50,15 @@ se12.playbackRate = 1;
 se13.playbackRate = 1;
 se14.playbackRate = 1;
 
-let drawCount=0;
-let fps=0;
-let lastTime=Date.now();
+let drawCount = 0;
+let fps = 0;
+let lastTime = Date.now();
 
 //スムージング
 const SMOOTHING = false;
 
 //ゲームスピード(ms)
-const GAME_SPEED = 1000/60;
+const GAME_SPEED = 1000 / 60;
 
 //画面サイズ
 const SCREEN_W = 180;
@@ -78,22 +78,21 @@ const STAR_MAX = 300;
 //キャンバス
 let can = document.getElementById("can"); //表示されるキャンバス
 let con = can.getContext("2d");
-can.width  = CANVAS_W;
+can.width = CANVAS_W;
 can.height = CANVAS_H;
 
-con.mozimageSmoothingEnabled    = SMOOTHING;
+con.mozimageSmoothingEnabled = SMOOTHING;
 con.webkitimageSmoothingEnabled = SMOOTHING;
-con.msimageSmoothingEnabled     = SMOOTHING;
-con.imageSmoothingEnabled       = SMOOTHING;
-con.font="20px 'Impact'";
-
+con.msimageSmoothingEnabled = SMOOTHING;
+con.imageSmoothingEnabled = SMOOTHING;
+con.font = "20px 'Impact'";
 
 //フィールド(仮想画面)
 let vcan = document.createElement("canvas"); //表示されないキャンバス
 let vcon = vcan.getContext("2d");
-vcan.width  = FIELD_W;
+vcan.width = FIELD_W;
 vcan.height = FIELD_H;
-vcon.font="12px 'Impact'";
+vcon.font = "12px 'Impact'";
 
 //カメラの座標
 let camera_x = 0;
@@ -105,23 +104,22 @@ let gameOver = false;
 let score = 0;
 
 //
-let bossHP =0;
-let bossMHP =0;
+let bossHP = 0;
+let bossMHP = 0;
 
 //星の実体
-let star=[];
+let star = [];
 
 //キーボードの状態
-let key=[];
-
+let key = [];
 
 //オブジェクト達
-let teki=[];
-let teta=[];
-let tama=[];
-let expl=[];
-let item=[];
-let jiki= new Jiki();
+let teki = [];
+let teta = [];
+let tama = [];
+let expl = [];
+let item = [];
+let jiki = new Jiki();
 //teki[0]= new Teki( 75, 200<<8,200<<8, 0,0)
 
 //ファイルを読み込み
@@ -129,261 +127,267 @@ let spriteImage = new Image();
 spriteImage.src = "sprite.png";
 
 //ゲーム初期化
-function gameInit()
-{
-  for(let i=0;i<STAR_MAX;i++)star[i]=new Star();
-  setInterval( gameLoop, GAME_SPEED );
+function gameInit() {
+  for (let i = 0; i < STAR_MAX; i++) star[i] = new Star();
+  setInterval(gameLoop, GAME_SPEED);
 }
 
 //オブジェクトをアップデート
-function updateObj( obj )
-{
-  for(let i=obj.length-1;i>=0;i--)
-  {
+function updateObj(obj) {
+  for (let i = obj.length - 1; i >= 0; i--) {
     obj[i].update();
-    if(obj[i].kill)obj.splice( i,1);
+    if (obj[i].kill) obj.splice(i, 1);
   }
 }
 
 //オブジェクトを描画
-function drawObj( obj )
-{
-  for(let i=0;i<obj.length;i++)obj[i].draw(); 
+function drawObj(obj) {
+  for (let i = 0; i < obj.length; i++) obj[i].draw();
 }
 
 //移動の処理
-function updateAll()
-{
-  updateObj( star );
-  updateObj( tama );
-  updateObj( teta );
-  updateObj( teki );
-  updateObj( expl );
-  updateObj( item );
-  if(!gameOver)jiki.update();
+function updateAll() {
+  updateObj(star);
+  updateObj(tama);
+  updateObj(teta);
+  updateObj(teki);
+  updateObj(expl);
+  updateObj(item);
+  if (!gameOver) jiki.update();
 }
 
 //描画の処理
-function drawAll()
-{
-  vcon.fillStyle=(jiki.damage)?"red":"black";
-  vcon.fillRect(camera_x,camera_y,SCREEN_W,SCREEN_H);
+function drawAll() {
+  vcon.fillStyle = jiki.damage ? "red" : "black";
+  vcon.fillRect(camera_x, camera_y, SCREEN_W, SCREEN_H);
 
-  drawObj( star );
-  drawObj( tama );
-  if(!gameOver)jiki.draw();
-  drawObj( teki );
-  drawObj( expl );
-  drawObj( teta );
-  drawObj( item );
-  
+  drawObj(star);
+  drawObj(tama);
+  if (!gameOver) jiki.draw();
+  drawObj(teki);
+  drawObj(expl);
+  drawObj(teta);
+  drawObj(item);
+
   //自機の範囲0〜FIEL_W
   //カメラの範囲0〜(FIELD_W-SCREEN_W)
 
-  camera_x = Math.floor((jiki.x>>8)/FIELD_W * (FIELD_W-SCREEN_W));
-  camera_y = Math.floor((jiki.y>>8)/FIELD_H * (FIELD_H-SCREEN_H));
+  camera_x = Math.floor(((jiki.x >> 8) / FIELD_W) * (FIELD_W - SCREEN_W));
+  camera_y = Math.floor(((jiki.y >> 8) / FIELD_H) * (FIELD_H - SCREEN_H));
 
   //ボスのHPを表示する
 
-  if( bossHP>0 )
-  {
-    let sz  = (SCREEN_W-20)*bossHP/bossMHP;
-    let sz2 = (SCREEN_W-20);
+  if (bossHP > 0) {
+    let sz = ((SCREEN_W - 20) * bossHP) / bossMHP;
+    let sz2 = SCREEN_W - 20;
 
-    vcon.fillStyle="rgba(255,0,0,0.5)";
-    vcon.fillRect(camera_x+10,camera_y+10,sz,10);
-    vcon.strokeStyle="rgba(255,0,0,0.9)";
-    vcon.strokeRect(camera_x+10,camera_y+10,sz2,10);
+    vcon.fillStyle = "rgba(255,0,0,0.5)";
+    vcon.fillRect(camera_x + 10, camera_y + 15, sz, 10);
+    vcon.strokeStyle = "rgba(255,0,0,0.9)";
+    vcon.strokeRect(camera_x + 10, camera_y + 15, sz2, 10);
   }
 
   //自機のHPを表示する
-  if( jiki.hp>0 )
-    {
-      let sz  = (SCREEN_W-20)*jiki.hp/jiki.mhp;
-      let sz2 = (SCREEN_W-20);
-  
-      vcon.fillStyle="rgba(0,0,255,0.5)";
-      vcon.fillRect(camera_x+10,camera_y+SCREEN_H-14,sz,10);
-      vcon.strokeStyle="rgba(0,0,255,0.9)";
-      vcon.strokeRect(camera_x+10,camera_y+SCREEN_H-14,sz2,10);
-    }
+  if (jiki.hp > 0) {
+    let sz = ((SCREEN_W - 20) * jiki.hp) / jiki.mhp;
+    let sz2 = SCREEN_W - 20;
+
+    vcon.fillStyle = "rgba(0,0,255,0.5)";
+    vcon.fillRect(camera_x + 10, camera_y + SCREEN_H - 317, sz, 10);
+    vcon.strokeStyle = "rgba(0,0,255,0.9)";
+    vcon.strokeRect(camera_x + 10, camera_y + SCREEN_H - 317, sz2, 10);
+  }
   //スコア表示
   vcon.fillStyle = "white";
-  vcon.fillText("SCORE "+score,camera_x+100,camera_y+14 );
-  
+  vcon.fillText("SCORE " + score, camera_x + 100, camera_y + 14);
+
   //power up message
-  if(jiki.powerFlag)
-  {
-     vcon.fillText(jiki.powerMessage,(jiki.x>>8)-10,(jiki.y>>8)-(jiki.count-jiki.powerMessageCount));
-     if(jiki.count > jiki.powerMessageCount + 100)
-      {jiki.powerFlag = false;}  
+  if (jiki.powerFlag) {
+    vcon.fillText(
+      jiki.powerMessage,
+      (jiki.x >> 8) - 10,
+      (jiki.y >> 8) - (jiki.count - jiki.powerMessageCount)
+    );
+    if (jiki.count > jiki.powerMessageCount + 100) {
+      jiki.powerFlag = false;
+    }
   }
- 
+
+  drawCircle(camera_x+20, camera_y+300, 20,"blue");
+  drawCircle(camera_x+91, camera_y+300, 20,"blue");
+  drawCircle(camera_x+159, camera_y+300, 20,"blue");
+
+  vcon.fillstyle ="red";
+  vcon.strokeStyle ="red";
+  vcon.strokeText = "red ";
+  vcon.fillStyle = "white";
+  vcon.fillText("<<", camera_x+12, camera_y+300);
+  vcon.fillText("Left", camera_x+10, camera_y+310);
+
+  vcon.fillText(">>", camera_x+155, camera_y+300);
+  vcon.fillText("Right", camera_x+146, camera_y+310);
+
+  vcon.fillText("◎", camera_x+85, camera_y+300);
+  vcon.fillText("Shot", camera_x+80, camera_y+310);
 
   //仮想画面から実際のキャンバスにコピー
 
-  con.drawImage( vcan ,camera_x,camera_y,SCREEN_W,SCREEN_H,0,0,CANVAS_W,CANVAS_H);
+  con.drawImage(
+    vcan,
+    camera_x,
+    camera_y,
+    SCREEN_W,
+    SCREEN_H,
+    0,
+    0,
+    CANVAS_W,
+    CANVAS_H
+  );
 }
 
 //情報の表示
-function putInfo()
-{
-  con.fillStyle="white";
+function putInfo() {
+  con.fillStyle = "white";
 
-  if( gameOver )
-  {
+  if (gameOver) {
     se15.loop = false;
     se16.loop = false;
     se15.pause();
     se16.pause();
-    if( gameStart ){
-    let s = "GAME OVER";
-    let w = con.measureText(s).width;
-    let x = CANVAS_W/2 - w/2;
-    let y = CANVAS_H/2 - 20;
-    con.fillText(s,x,y);
-    s = "Push 'R' key to restart !";
-    w = con.measureText(s).width;
-    x = CANVAS_W/2 - w/2;
-    y = CANVAS_H/2 - 20+20;
-    con.fillText(s,x,y);
-      document.getElementById("RETRY").style.display=("block");
+    if (gameStart) {
+      let s = "GAME OVER";
+      let w = con.measureText(s).width;
+      let x = CANVAS_W / 2 - w / 2;
+      let y = CANVAS_H / 2 - 20;
+      con.fillText(s, x, y);
+      s = "Push 'R' key to restart !";
+      w = con.measureText(s).width;
+      x = CANVAS_W / 2 - w / 2;
+      y = CANVAS_H / 2 - 20 + 20;
+      con.fillText(s, x, y);
+      document.getElementById("RETRY").style.display = "block";
     } else {
-      document.getElementById("START").style.display=("block");
+      document.getElementById("START").style.display = "block";
     }
   }
 
-
-  if(DEBUG)
-  {
+  if (DEBUG) {
     drawCount++;
-    if( lastTime +1000 <= Date.now() )
-    {
-      fps=drawCount;
+    if (lastTime + 1000 <= Date.now()) {
+      fps = drawCount;
       drawCount = 0;
-      lastTime=Date.now();
+      lastTime = Date.now();
     }
-    con.fillText("FPS :"+fps,20,20);  
-    con.fillText("Tama:"+tama.length,20,40);  
-    con.fillText("Teki:"+teki.length,20,60);  
-    con.fillText("Teta:"+teta.length,20,80);  
-    con.fillText("Expl:"+expl.length,20,100);  
-    con.fillText("X:"+(jiki.x>>8),20,120);  
-    con.fillText("Y:"+(jiki.y>>8),20,140);  
-    con.fillText("HP:"+jiki.hp,20,160);  
-    con.fillText("SCORE:"+score,20,180);  
-    con.fillText("COUNT:"+gameCount,20,200);  
-    con.fillText("WAVE:"+gameWave,20,220);  
-    con.fillText("ITEM:"+item.length,20,240); 
-    con.fillText("WEAPON:"+jiki.weapon,20,260); 
-    con.fillText("POWER:"+jiki.power,20,280); 
+    con.fillText("FPS :" + fps, 20, 20);
+    con.fillText("Tama:" + tama.length, 20, 40);
+    con.fillText("Teki:" + teki.length, 20, 60);
+    con.fillText("Teta:" + teta.length, 20, 80);
+    con.fillText("Expl:" + expl.length, 20, 100);
+    con.fillText("X:" + (jiki.x >> 8), 20, 120);
+    con.fillText("Y:" + (jiki.y >> 8), 20, 140);
+    con.fillText("HP:" + jiki.hp, 20, 160);
+    con.fillText("SCORE:" + score, 20, 180);
+    con.fillText("COUNT:" + gameCount, 20, 200);
+    con.fillText("WAVE:" + gameWave, 20, 220);
+    con.fillText("ITEM:" + item.length, 20, 240);
+    con.fillText("WEAPON:" + jiki.weapon, 20, 260);
+    con.fillText("POWER:" + jiki.power, 20, 280);
 
-    //con.fillText("Power up !",jiki.x>>8,jiki.y>>8);  
+    //con.fillText("Power up !",jiki.x>>8,jiki.y>>8);
   }
 }
 
-let gameCount =0;
-let gameWave  =0;
-let gameRound =0;
+let gameCount = 0;
+let gameWave = 0;
+let gameRound = 0;
 
-let starSpeed    = 100;
+let starSpeed = 100;
 let starSpeedReq = 100;
 
 //ゲームループ
-function gameLoop()
-{
+function gameLoop() {
   gameCount++;
-  if( starSpeedReq>starSpeed )starSpeed++;
-  if( starSpeedReq<starSpeed )starSpeed--;
-  
-  if( gameWave == 0)
-    {
-      if( rand(0,15)==1 )
-      {
-        let r = rand(0,1);
-        teki.push( new Teki( 0,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
-      }
-      if( gameCount >60*20)
-        {
-          gameWave++;
-      gameCount=0;
-      starSpeedReq=200;
+  if (starSpeedReq > starSpeed) starSpeed++;
+  if (starSpeedReq < starSpeed) starSpeed--;
+
+  if (gameWave == 0) {
+    if (rand(0, 15) == 1) {
+      let r = rand(0, 1);
+      teki.push(new Teki(0, rand(0, FIELD_W) << 8, 0, 0, rand(300, 1200)));
     }
-  }
-  else if( gameWave == 1)
-  {
-    if( rand(0,15)==1 )
-      {
-        let r = rand(0,1);
-      teki.push( new Teki( 1,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
-    }
-    if( gameCount >60*20)
-    {
+    if (gameCount > 60 * 20) {
       gameWave++;
-      gameCount=0;
-      starSpeedReq=100;
+      gameCount = 0;
+      starSpeedReq = 200;
     }
-  }
-  else if( gameWave == 2)
-    {
-      if( gameCount >60*18) {se15.volume = soundVolume * 0.1;}
-      else if( gameCount >60*17) {se15.volume = soundVolume * 0.2;}
-      else if( gameCount >60*16) {se15.volume = soundVolume * 0.3;}
-      else if( gameCount >60*15) {se15.volume = soundVolume * 0.4;}
-      else {se15.volume = soundVolume * 0.5;}
-    if( rand(0,10)==1 )
-    {
-      let r = rand(0,1);
-      teki.push( new Teki( 1,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
+  } else if (gameWave == 1) {
+    if (rand(0, 15) == 1) {
+      let r = rand(0, 1);
+      teki.push(new Teki(1, rand(0, FIELD_W) << 8, 0, 0, rand(300, 1200)));
     }
-    if( gameCount >60*20)
-      {
+    if (gameCount > 60 * 20) {
       gameWave++;
-      gameCount=0;
-      teki.push( new Teki( 2,(FIELD_W/2)<<8,-(70<<8),0,200));
-      starSpeedReq=600;
+      gameCount = 0;
+      starSpeedReq = 100;
+    }
+  } else if (gameWave == 2) {
+    if (gameCount > 60 * 18) {
+      se15.volume = soundVolume * 0.1;
+    } else if (gameCount > 60 * 17) {
+      se15.volume = soundVolume * 0.2;
+    } else if (gameCount > 60 * 16) {
+      se15.volume = soundVolume * 0.3;
+    } else if (gameCount > 60 * 15) {
+      se15.volume = soundVolume * 0.4;
+    } else {
+      se15.volume = soundVolume * 0.5;
+    }
+    if (rand(0, 10) == 1) {
+      let r = rand(0, 1);
+      teki.push(new Teki(1, rand(0, FIELD_W) << 8, 0, 0, rand(300, 1200)));
+    }
+    if (gameCount > 60 * 20) {
+      gameWave++;
+      gameCount = 0;
+      teki.push(new Teki(2, (FIELD_W / 2) << 8, -(70 << 8), 0, 200));
+      starSpeedReq = 600;
       se15.pause();
       se15.loop = false;
       se16.currentTime = 0;
       se16.loop = true;
       se16.play();
     }
-  }
-  else if( gameWave == 3)
-    {
-      
-    if( teki.length == 0)
-    {
-      gameWave  = 0;
+  } else if (gameWave == 3) {
+    if (teki.length == 0) {
+      gameWave = 0;
       gameCount = 0;
       gameRound++;
-      starSpeedReq=100;
+      starSpeedReq = 100;
       se16.pause();
       se16.loop = false;
       se15.currentTime = 0;
-      se15.volume = soundVolume * 0.5
+      se15.volume = soundVolume * 0.5;
       se15.loop = true;
       se15.play();
     }
   }
-  
+
   updateAll();
   drawAll();
   putInfo();
 }
 
-window.onload = function()
-{
+window.onload = function () {
   gameOver = true;
-  const button_start = document.getElementById('START');
-  const button_retry = document.getElementById('RETRY');
+  const button_start = document.getElementById("START");
+  const button_retry = document.getElementById("RETRY");
   startGame();
-  button_start.addEventListener('click', function(){
-    document.getElementById("START").style.display=("none");
+  button_start.addEventListener("click", function () {
+    document.getElementById("START").style.display = "none";
     gameStart = true;
-    retry()
+    retry();
   });
-  button_retry.addEventListener('click', function(){
+  button_retry.addEventListener("click", function () {
     retry();
     //delete jiki;
     //jiki = new Jiki();
@@ -391,9 +395,17 @@ window.onload = function()
     //score = 0;
     //startGame();
   });
-  function startGame(){
+  function startGame() {
     gameInit();
-    document.getElementById("START").style.display=("none");
-    document.getElementById("RETRY").style.display=("none");
+    document.getElementById("START").style.display = "none";
+    document.getElementById("RETRY").style.display = "none";
   }
-}
+};
+
+   //円を描く
+   function drawCircle(x, y, r, color){
+    vcon.fillStyle = color;
+    vcon.beginPath();
+    vcon.arc(x, y, r, 0, Math.PI*2);
+    vcon.fill();
+    }
