@@ -14,6 +14,13 @@ se6 = new Audio("shot.mp3");
 se7 = new Audio("hit.mp3");
 se8 = new Audio("expl.mp3");
 se9 = new Audio("speed.mp3");
+se10 = new Audio("get.mp3");
+se11 = new Audio("shild.mp3");
+se12 = new Audio("jikihidan.mp3");
+se13 = new Audio("jikibakuhatu.mp3");
+se14 = new Audio("power.mp3");
+se15 = new Audio("BGM_nomal.mp3");
+se16 = new Audio("BGM_boss.mp3");
 se1.volume = soundVolume * 4;
 se2.volume = soundVolume / 5;
 se3.volume = soundVolume * 4;
@@ -23,6 +30,13 @@ se6.volume = soundVolume * 2;
 se7.volume = soundVolume * 1;
 se8.volume = soundVolume * 1;
 se9.volume = soundVolume * 1;
+se10.volume = soundVolume * 1;
+se11.volume = soundVolume * 1;
+se12.volume = soundVolume * 1;
+se13.volume = soundVolume * 2;
+se14.volume = soundVolume * 1;
+se15.volume = soundVolume * 0.5;
+se16.volume = soundVolume * 0.5;
 se1.playbackRate = 5;
 se2.playbackRate = 10;
 se3.playbackRate = 2;
@@ -30,6 +44,11 @@ se6.playbackRate = 3;
 se7.playbackRate = 1;
 se8.playbackRate = 1;
 se9.playbackRate = 1;
+se10.playbackRate = 1;
+se11.playbackRate = 1;
+se12.playbackRate = 1;
+se13.playbackRate = 1;
+se14.playbackRate = 1;
 
 let drawCount=0;
 let fps=0;
@@ -213,6 +232,10 @@ function putInfo()
 
   if( gameOver )
   {
+    se15.loop = false;
+    se16.loop = false;
+    se15.pause();
+    se16.pause();
     if( gameStart ){
     let s = "GAME OVER";
     let w = con.measureText(s).width;
@@ -272,17 +295,17 @@ function gameLoop()
   gameCount++;
   if( starSpeedReq>starSpeed )starSpeed++;
   if( starSpeedReq<starSpeed )starSpeed--;
-
+  
   if( gameWave == 0)
-  {
-    if( rand(0,15)==1 )
     {
-      let r = rand(0,1);
-      teki.push( new Teki( 0,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
-    }
-    if( gameCount >60*20)
-    {
-      gameWave++;
+      if( rand(0,15)==1 )
+      {
+        let r = rand(0,1);
+        teki.push( new Teki( 0,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
+      }
+      if( gameCount >60*20)
+        {
+          gameWave++;
       gameCount=0;
       starSpeedReq=200;
     }
@@ -290,8 +313,8 @@ function gameLoop()
   else if( gameWave == 1)
   {
     if( rand(0,15)==1 )
-    {
-      let r = rand(0,1);
+      {
+        let r = rand(0,1);
       teki.push( new Teki( 1,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
     }
     if( gameCount >60*20)
@@ -302,29 +325,45 @@ function gameLoop()
     }
   }
   else if( gameWave == 2)
-  {
+    {
+      if( gameCount >60*18) {se15.volume = soundVolume * 0.1;}
+      else if( gameCount >60*17) {se15.volume = soundVolume * 0.2;}
+      else if( gameCount >60*16) {se15.volume = soundVolume * 0.3;}
+      else if( gameCount >60*15) {se15.volume = soundVolume * 0.4;}
+      else {se15.volume = soundVolume * 0.5;}
     if( rand(0,10)==1 )
     {
       let r = rand(0,1);
       teki.push( new Teki( 1,rand(0,FIELD_W)<<8,0,0,rand(300,1200)));
     }
     if( gameCount >60*20)
-    {
+      {
       gameWave++;
       gameCount=0;
       teki.push( new Teki( 2,(FIELD_W/2)<<8,-(70<<8),0,200));
       starSpeedReq=600;
-
+      se15.pause();
+      se15.loop = false;
+      se16.currentTime = 0;
+      se16.loop = true;
+      se16.play();
     }
   }
   else if( gameWave == 3)
-  {
+    {
+      
     if( teki.length == 0)
     {
       gameWave  = 0;
       gameCount = 0;
       gameRound++;
       starSpeedReq=100;
+      se16.pause();
+      se16.loop = false;
+      se15.currentTime = 0;
+      se15.volume = soundVolume * 0.5
+      se15.loop = true;
+      se15.play();
     }
   }
   

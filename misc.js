@@ -57,6 +57,8 @@ class Item extends CharaBase {
       if (this.effect == 0) {
         jiki.power += 1;
         jiki.powerMessage = "Power UP !";
+        se14.pause();
+        se14.play();
       } else if (this.effect == 1) {
         jiki.speed += 100;
         jiki.powerMessage = "SPEED UP !";
@@ -65,9 +67,13 @@ class Item extends CharaBase {
       } else if (this.effect == 2) {
         jiki.weapon = 1;
         jiki.powerMessage = "Leaser Beem !";
+        se10.pause();
+        se10.play();
       } else if (this.effect == 3) {
         jiki.hp += 30;
         jiki.powerMessage = "Sheeld UP !";
+        se11.pause();
+        se11.play();
       } else if (this.effect == 4) {
         jiki.powerMessage = "Bomber !";
         se8.pause();
@@ -84,6 +90,8 @@ class Item extends CharaBase {
       } else {
         jiki.weapon = 0;
         jiki.powerMessage = "Tama Shot !";
+        se10.pause();
+        se10.play();
       }
     }
   }
@@ -149,6 +157,9 @@ function retry(){
   jiki = new Jiki();
   gameOver = false;
   score = 0;
+  se15.currentTime = 0;
+  se15.loop = true;
+  se15.play();
 }
 
 //キーボードが離された時

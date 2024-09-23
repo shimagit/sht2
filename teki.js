@@ -30,11 +30,15 @@ class Teta extends CharaBase
       if((jiki.hp -=30)<=0 )
       {
         gameOver = true;
+        se13.pause();
+        se13.play();
       }
       else
       {
         jiki.damage = 10;
         jiki.muteki = 60;
+        se12.pause();
+        se12.play();
       }
     }
 
