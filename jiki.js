@@ -102,35 +102,21 @@ class Jiki {
           tama.push(new Tama(this.x + (6 << 8), this.y - (10 << 8), 0, -2000));
           tama.push(new Tama(this.x - (6 << 8), this.y - (10 << 8), 0, -2000));
           tama.push(new Tama(this.x + (8 << 8), this.y - (5 << 8), 200, -2000));
-          tama.push(
-            new Tama(this.x - (8 << 8), this.y - (5 << 8), -200, -2000)
-          );
+          tama.push(new Tama(this.x - (8 << 8), this.y - (5 << 8), -200, -2000));
         } else if (this.power == 4) {
           tama.push(new Tama(this.x, this.y, 0, -2000));
           tama.push(new Tama(this.x + (6 << 8), this.y, 150, -2000));
           tama.push(new Tama(this.x - (6 << 8), this.y, -150, -2000));
-          tama.push(
-            new Tama(this.x + (8 << 8), this.y - (10 << 8), 300, -2000)
-          );
-          tama.push(
-            new Tama(this.x - (8 << 8), this.y - (10 << 8), -300, -2000)
-          );
+          tama.push(new Tama(this.x + (8 << 8), this.y - (10 << 8), 300, -2000));
+          tama.push(new Tama(this.x - (8 << 8), this.y - (10 << 8), -300, -2000));
         } else {
           tama.push(new Tama(this.x, this.y, 0, -2000));
           tama.push(new Tama(this.x + (6 << 8), this.y, 150, -2000));
           tama.push(new Tama(this.x - (6 << 8), this.y, -150, -2000));
-          tama.push(
-            new Tama(this.x + (8 << 8), this.y - (10 << 8), 300, -2000)
-          );
-          tama.push(
-            new Tama(this.x - (8 << 8), this.y - (10 << 8), -300, -2000)
-          );
-          tama.push(
-            new Tama(this.x + (8 << 8), this.y - (10 << 8), 500, -2000)
-          );
-          tama.push(
-            new Tama(this.x - (8 << 8), this.y - (10 << 8), -500, -2000)
-          );
+          tama.push(new Tama(this.x + (8 << 8), this.y - (10 << 8), 300, -2000));
+          tama.push(new Tama(this.x - (8 << 8), this.y - (10 << 8), -300, -2000));
+          tama.push(new Tama(this.x + (8 << 8), this.y - (10 << 8), 500, -2000));
+          tama.push(new Tama(this.x - (8 << 8), this.y - (10 << 8), -500, -2000));
         }
         this.reload = 4; // 連射間隔
         if (++this.relo2 == 4) {// 連射数

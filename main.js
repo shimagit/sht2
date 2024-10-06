@@ -87,6 +87,14 @@ con.msimageSmoothingEnabled = SMOOTHING;
 con.imageSmoothingEnabled = SMOOTHING;
 con.font = "20px 'Impact'";
 
+
+//マウス操作設定
+can.onmousedown = mymousedown;
+can.onmouseup = mymouseup;
+can.addEventListener('touchstart', mymousedown);
+can.addEventListener('touchend', mymouseup);
+
+
 //フィールド(仮想画面)
 let vcan = document.createElement("canvas"); //表示されないキャンバス
 let vcon = vcan.getContext("2d");
@@ -112,6 +120,11 @@ let star = [];
 
 //キーボードの状態
 let key = [];
+let keyCode2 = 0;
+
+//
+let xx=0;
+let yy=0;
 
 //オブジェクト達
 let teki = [];
@@ -214,21 +227,25 @@ function drawAll() {
   }
 
   drawCircle(camera_x+20, camera_y+300, 20,"blue");
-  drawCircle(camera_x+91, camera_y+300, 20,"blue");
-  drawCircle(camera_x+159, camera_y+300, 20,"blue");
+  drawCircle(camera_x+120, camera_y+282, 15,"blue");
+  drawCircle(camera_x+163, camera_y+282, 15,"blue");
+  drawCircle(camera_x+141, camera_y+260, 15,"blue");
+  drawCircle(camera_x+141, camera_y+305, 15,"blue");
+  drawCircle(xx, yy, 20,"orange");
+  console.log('zx='+xx, "zy="+yy, 'keyCode2='+keyCode2);
+
 
   vcon.fillstyle ="red";
   vcon.strokeStyle ="red";
   vcon.strokeText = "red ";
   vcon.fillStyle = "white";
-  vcon.fillText("<<", camera_x+12, camera_y+300);
-  vcon.fillText("Left", camera_x+10, camera_y+310);
+  vcon.fillText("◎", camera_x+14, camera_y+298);
+  vcon.fillText("Shot", camera_x+9, camera_y+310);
 
-  vcon.fillText(">>", camera_x+155, camera_y+300);
-  vcon.fillText("Right", camera_x+146, camera_y+310);
-
-  vcon.fillText("◎", camera_x+85, camera_y+300);
-  vcon.fillText("Shot", camera_x+80, camera_y+310);
+  vcon.fillText("←", camera_x+115, camera_y+285);
+  vcon.fillText("→", camera_x+158, camera_y+285);
+  vcon.fillText("↑", camera_x+138, camera_y+262);
+  vcon.fillText("↓", camera_x+138, camera_y+308);
 
   //仮想画面から実際のキャンバスにコピー
 
@@ -401,6 +418,102 @@ window.onload = function () {
     document.getElementById("RETRY").style.display = "none";
   }
 };
+
+function controle()
+{
+  switch(keyCode2)
+  {
+    case 37:// 左
+        if ( checkMove( -1,  0 ))tetro_x--;
+        break;
+    case 38:// 上
+        //if ( checkMove(  0, -1 ))tetro_y--;
+        break;
+    case 39:// 右
+        if ( checkMove(  1,  0 ))tetro_x++;
+        break;
+    case 40:// 下
+        while( checkMove(0,  1 ))tetro_y++;
+        break;
+    case 32:// スペース
+        let ntetro = rotate();
+        if ( checkMove( 0, 0, ntetro))
+        {
+          se2.pause();
+          se2.play();
+          tetro = ntetro;
+        }
+        break;
+    }
+    drawAll();
+}
+
+//キーボードが押された時の処理
+//document.onkeydown = function(e)
+//{
+  //if (over) return;
+  //keyCode2 = e.keyCode;
+  //controle();
+//}
+
+//マウスのクリックボタンを離した時の処理
+function mymouseup(e){
+  key[32] = false;
+  key[37] = false;
+  key[38] = false;
+  key[39] = false;
+  key[40] = false;
+  if (gameOver) return;
+  //keyCode2 = 0;
+} 
+
+//マウスのクリックボタンを押した時の処理
+function mymousedown(e) {
+  e.preventDefault() ;
+  var mouseX = !isNaN(e.offsetX) ? e.offsetX : e.touches[0].clientX;
+  var mouseY = !isNaN(e.offsetY) ? e.offsetY : e.touches[0].clientY;
+  xx = camera_x + (mouseX>>1) //=camera_x+mouseX/100
+  yy = camera_y + (mouseY>>1) //camera_x+mouseX/100
+    //console.log('xx='+mouseX, "yy="+mouseY);
+    //console.log('xx='+camera_x, "yy="+camera_y);
+    //drawCircle(xx, yy, 35,"red");
+    //drawCircle(camera_x, camera_y, 20,"white");
+    console.log("*************",keyCode2)
+
+
+
+  //if (gameOver) return;
+    //e.preventDefault() ;
+    //var mouseX = !isNaN(e.offsetX) ? e.offsetX : e.touches[0].clientX;
+    //var mouseY = !isNaN(e.offsetY) ? e.offsetY : e.touches[0].clientY;
+    //console.log("@@keyCode:",keyCode2)
+    //keyCode2=0;
+    if (xx < 130 && 570 < yy) {
+      keyCode2 = 32; //shot
+        } else {
+          if(215 < xx && 245 > xx &&  590 < yy ) {
+            keyCode2 = 40; //down
+          } else {
+            if (215 < xx && 245 > xx && 540 < yy && 570 > yy ) {
+              keyCode2 = 38; //up
+            } else {
+              if (195 < xx && 225 > xx && 560 < yy && 590 > yy ) {
+                keyCode2 = 37; //left
+              } else {
+                if (235 < xx && 265 > xx && 560 < yy && 590 > yy ) {
+                  keyCode2 = 39; //right;
+                }
+                console.log("keyCode:",keyCode2," SHOT")
+              }
+            }
+          }
+        }
+        console.log("---keyCode:",keyCode2)
+        key[keyCode2] = true
+
+    controle();
+    //drawCircle(mouseX, mouseY, 35,"red");
+}
 
    //円を描く
    function drawCircle(x, y, r, color){

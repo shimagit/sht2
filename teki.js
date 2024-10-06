@@ -36,7 +36,7 @@ class Teta extends CharaBase
       else
       {
         jiki.damage = 10;
-        jiki.muteki = 60;
+        jiki.muteki = 9999999999 //60;
         se12.pause();
         se12.play();
       }
