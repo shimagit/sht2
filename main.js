@@ -472,13 +472,15 @@ function mymousedown(e) {
   e.preventDefault() ;
   var mouseX = !isNaN(e.offsetX) ? e.offsetX : e.touches[0].clientX;
   var mouseY = !isNaN(e.offsetY) ? e.offsetY : e.touches[0].clientY;
-  xx = camera_x + (mouseX>>1) //=camera_x+mouseX/100
-  yy = camera_y + (mouseY>>1) //camera_x+mouseX/100
+  //xx = camera_x + (mouseX>>1) //=camera_x+mouseX/100
+  //yy = camera_y + (mouseY>>1) //camera_x+mouseX/100
+  xx = mouseX>>1 //=camera_x+mouseX/100
+  yy = mouseY>>1 //camera_x+mouseX/100
     //console.log('xx='+mouseX, "yy="+mouseY);
     //console.log('xx='+camera_x, "yy="+camera_y);
     //drawCircle(xx, yy, 35,"red");
     //drawCircle(camera_x, camera_y, 20,"white");
-    console.log("*************",keyCode2)
+    console.log("*************",keyCode2,xx,yy)
 
 
 
@@ -488,6 +490,7 @@ function mymousedown(e) {
     //var mouseY = !isNaN(e.offsetY) ? e.offsetY : e.touches[0].clientY;
     //console.log("@@keyCode:",keyCode2)
     //keyCode2=0;
+    /*
     if (xx < 130 && 570 < yy) {
       keyCode2 = 32; //shot
         } else {
@@ -508,10 +511,36 @@ function mymousedown(e) {
             }
           }
         }
+      */
+        if (xx < 40 && 280 < yy) {
+          keyCode2 = 32; //shot
+          console.log("keyCode:",keyCode2," SHOT")
+            } else {
+              if(125 < xx && 155 > xx &&  290 < yy ) {
+                keyCode2 = 40; //down
+                console.log("keyCode:",keyCode2," Down")
+              } else {
+                if (125 < xx && 155 > xx && 240 < yy && 275 > yy ) {
+                  keyCode2 = 38; //up
+                  console.log("keyCode:",keyCode2," Up")
+                } else {
+                  if (105 < xx && 135 > xx && 265 < yy && 295 > yy ) {
+                    keyCode2 = 37; //left
+                    console.log("keyCode:",keyCode2," Left")
+                  } else {
+                    if (150 < xx && 265 < yy && 295 > yy ) {
+                      keyCode2 = 39; //right;
+                      console.log("keyCode:",keyCode2," Right")
+                    }
+                  }
+                }
+              }
+            }
+        //console.log("keyCode:",keyCode2," SHOT")
         console.log("---keyCode:",keyCode2)
         key[keyCode2] = true
 
-    controle();
+    //controle();
     //drawCircle(mouseX, mouseY, 35,"red");
 }
 
