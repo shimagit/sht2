@@ -280,8 +280,8 @@ const SMOOTHING = false;
 const GAME_SPEED = 1000 / 60;
 
 //画面サイズ
-const SCREEN_W = 180;
-const SCREEN_H = 320;
+const SCREEN_W = 150; // 180;
+const SCREEN_H = 220; // 320;
 
 //キャンバスサイズ
 const CANVAS_W = SCREEN_W * 2;
@@ -445,14 +445,14 @@ function drawAll() {
     }
   }
 
-  drawCircle(camera_x+20, camera_y+300, 20,"blue");
-  drawCircle(camera_x+120, camera_y+282, 15,"blue");
-  drawCircle(camera_x+163, camera_y+282, 15,"blue");
-  drawCircle(camera_x+141, camera_y+260, 15,"blue");
-  drawCircle(camera_x+141, camera_y+305, 15,"blue");
-  drawCircle(camera_x+(qx/2-3), camera_y+(qy/2-33), 15,"orange");
-  drawCircle(camera_x+(rx/2-3), camera_y+(ry/2-33), 10,"red");
-  drawCircle(camera_x+(sx/2-3), camera_y+(sy/2-33), 7,"lightgreen");
+  drawCircle(camera_x+ 20-0, camera_y+300-100, 20,"blue");
+  drawCircle(camera_x+120-30, camera_y+282-100, 15,"blue");
+  drawCircle(camera_x+163-30, camera_y+282-100, 15,"blue");
+  drawCircle(camera_x+141-30, camera_y+260-100, 15,"blue");
+  drawCircle(camera_x+141-30, camera_y+305-100, 15,"blue");
+  drawCircle(camera_x+(qx/2-3)-30, camera_y+(qy/2-33), 15,"orange");
+  drawCircle(camera_x+(rx/2-3)-30, camera_y+(ry/2-33), 10,"red");
+  drawCircle(camera_x+(sx/2-3)-30, camera_y+(sy/2-33), 7,"lightgreen");
   //drawCircle(camera_x+(xx-3), camera_y+(yy-10), 10,"red");
   console.log('zx='+xx, "zy="+yy, 'keyCode2='+keyCode2);
 
@@ -461,13 +461,12 @@ function drawAll() {
   vcon.strokeStyle ="red";
   vcon.strokeText = "red ";
   vcon.fillStyle = "white";
-  vcon.fillText("◎", camera_x+14, camera_y+298);
-  vcon.fillText("Shot", camera_x+9, camera_y+310);
-
-  vcon.fillText("←", camera_x+115, camera_y+285);
-  vcon.fillText("→", camera_x+158, camera_y+285);
-  vcon.fillText("↑", camera_x+138, camera_y+262);
-  vcon.fillText("↓", camera_x+138, camera_y+308);
+  vcon.fillText("◎",    camera_x+ 14-0, camera_y+298-100);
+  vcon.fillText("Shot", camera_x+  9-0, camera_y+310-100);
+  vcon.fillText("←",   camera_x+115-30, camera_y+285-100);
+  vcon.fillText("→",   camera_x+158-30, camera_y+285-100);
+  vcon.fillText("↑",   camera_x+138-30, camera_y+262-100);
+  vcon.fillText("↓",   camera_x+138-30, camera_y+308-100);
 
   //仮想画面から実際のキャンバスにコピー
 
