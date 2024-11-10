@@ -1,3 +1,222 @@
+let qx = 0;
+let qy = 0;
+let rx = 0;
+let ry = 0;
+let sx = 0;
+let sy = 0;
+
+function startup() {
+  const el = document.getElementById("can");
+  el.addEventListener("touchstart", handleStart);
+  el.addEventListener("touchend", handleEnd);
+  el.addEventListener("touchcancel", handleCancel);
+  el.addEventListener("touchmove", handleMove);
+  // log("Initialized.");
+}
+
+document.addEventListener("DOMContentLoaded", startup);
+
+const ongoingTouches = [];
+
+function handleStart(evt) {
+  evt.preventDefault();
+  // log("touchstart.");
+  const el = document.getElementById("can");
+  const ctx = el.getContext("2d");
+  const touches = evt.changedTouches;
+
+  for (let i = 0; i < touches.length; i++) {
+    // log(`touchstart: ${i}.`);
+    ongoingTouches.push(copyTouch(touches[i]));
+    const color = colorForTouch(touches[i]);
+    // log(`color of touch with id ${touches[i].identifier} = ${color}`);
+    ctx.beginPath();
+    ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false); // 最初に円を描く
+    rx = touches[i].pageX;
+    ry = touches[i].pageY;
+    sx = rx;
+    sy = ry;
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+}
+
+function handleMove(evt) {
+  evt.preventDefault();
+  const el = document.getElementById("can");
+  const ctx = el.getContext("2d");
+  const touches = evt.changedTouches;
+
+  for (let i = 0; i < touches.length; i++) {
+    const color = colorForTouch(touches[i]);
+    const idx = ongoingTouchIndexById(touches[i].identifier);
+
+    if (idx >= 0) {
+      // log(`continuing touch ${idx}`);
+      ctx.beginPath();
+      // log(`ctx.move( ${ongoingTouches[idx].pageX}, ${ongoingTouches[idx].pageY} );`,);
+      qx = ongoingTouches[idx].pageX;
+      qy = ongoingTouches[idx].pageY;
+      sx = qx;
+      sy = qy;
+      // drawCircle(qx,qy,20,lightgreen);
+      ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+      // log(`ctx.line( ${touches[i].pageX}, ${touches[i].pageY} );`);
+      ctx.lineTo(touches[i].pageX, touches[i].pageY);
+      // rx = touches[i].pageX;
+      // ry = touches[i].pageY;
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = color;
+      ctx.stroke();
+
+      ongoingTouches.splice(idx, 1, copyTouch(touches[i])); // swap in the new touch record
+    } else {
+      // log("can't figure out which touch to continue");
+    }
+  }
+}
+
+function handleEnd(evt) {
+  evt.preventDefault();
+  // log("touchend");
+  const el = document.getElementById("can");
+  const ctx = el.getContext("2d");
+  const touches = evt.changedTouches;
+
+  for (let i = 0; i < touches.length; i++) {
+    const color = colorForTouch(touches[i]);
+    let idx = ongoingTouchIndexById(touches[i].identifier);
+
+    if (idx >= 0) {
+      ctx.lineWidth = 4;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+      ctx.lineTo(touches[i].pageX, touches[i].pageY);
+      ctx.fillRect(touches[i].pageX - 4, touches[i].pageY - 4, 8, 8); // and a square at the end
+      ongoingTouches.splice(idx, 1); // remove it; we're done
+    } else {
+      // log("can't figure out which touch to end");
+    }
+  }
+}
+
+function handleCancel(evt) {
+  evt.preventDefault();
+  // log("touchcancel.");
+  const touches = evt.changedTouches;
+
+  for (let i = 0; i < touches.length; i++) {
+    let idx = ongoingTouchIndexById(touches[i].identifier);
+    ongoingTouches.splice(idx, 1); // remove it; we're done
+  }
+}
+
+function colorForTouch(touch) {
+  let r = touch.identifier % 16;
+  let g = Math.floor(touch.identifier / 3) % 16;
+  let b = Math.floor(touch.identifier / 7) % 16;
+  r = r.toString(16); // make it a hex digit
+  g = g.toString(16); // make it a hex digit
+  b = b.toString(16); // make it a hex digit
+  const color = `#${r}${g}${b}`;
+  return color;
+}
+
+function copyTouch({ identifier, pageX, pageY }) {
+  return { identifier, pageX, pageY };
+}
+
+function ongoingTouchIndexById(idToFind) {
+  for (let i = 0; i < ongoingTouches.length; i++) {
+    const id = ongoingTouches[i].identifier;
+
+    if (id === idToFind) {
+      return i;
+    }
+  }
+  return -1; // 見つからない
+}
+
+function log(msg) {
+  const container = document.getElementById("log");
+  container.textContent = `${msg} \n${container.textContent}`;
+}
+
+/*
+
+// 要素ら
+
+var $document = $(document);
+var $hitarea = $('#hitarea');
+var $eventname = $('#eventname');
+var $x = $('#x');
+var $y = $('#y');
+
+// タッチイベントが利用可能かの判別
+
+var supportTouch = 'ontouchend' in document;
+
+// イベント名
+
+var EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
+var EVENTNAME_TOUCHMOVE = supportTouch ? 'touchmove' : 'mousemove';
+var EVENTNAME_TOUCHEND = supportTouch ? 'touchend' : 'mouseup';
+
+// 表示をアップデートする関数群
+
+var updateXY = function(event) {
+  // jQueryのイベントはオリジナルのイベントをラップしたもの。
+  // changedTouchesが欲しいので、オリジナルのイベントオブジェクトを取得
+  var original = event.originalEvent;
+  var x, y;
+  if(original.changedTouches) {
+    x = original.changedTouches[0].pageX;
+    y = original.changedTouches[0].pageY;
+  } else {
+    x = event.pageX;
+    y = event.pageY;
+  }
+  $x.text(x);
+  $y.text(y);
+  console.log("abc",x,y)
+};
+var updateEventname = function(eventname) {
+  $eventname.text(eventname);
+};
+
+// イベント設定
+
+var handleStart = function(event) {
+  updateEventname(EVENTNAME_TOUCHSTART);
+  updateXY(event);
+  $hitarea.css('background-color', 'red');
+  bindMoveAndEnd();
+};
+var handleMove = function(event) {
+  event.preventDefault(); // タッチによる画面スクロールを止める
+  updateEventname(EVENTNAME_TOUCHMOVE);
+  updateXY(event);
+};
+var handleEnd = function(event) {
+  updateEventname(EVENTNAME_TOUCHEND);
+  updateXY(event);
+  $hitarea.css('background-color', 'blue');
+  unbindMoveAndEnd();
+};
+var bindMoveAndEnd = function() {
+  $document.on(EVENTNAME_TOUCHMOVE, handleMove);
+  $document.on(EVENTNAME_TOUCHEND, handleEnd);
+};
+var unbindMoveAndEnd = function() {
+  $document.off(EVENTNAME_TOUCHMOVE, handleMove);
+  $document.off(EVENTNAME_TOUCHEND, handleEnd);
+};
+
+$hitarea.on(EVENTNAME_TOUCHSTART, handleStart);
+
+*/
+
 //デバッグフラグ
 const DEBUG = true;
 
@@ -231,7 +450,10 @@ function drawAll() {
   drawCircle(camera_x+163, camera_y+282, 15,"blue");
   drawCircle(camera_x+141, camera_y+260, 15,"blue");
   drawCircle(camera_x+141, camera_y+305, 15,"blue");
-  drawCircle(xx, yy, 20,"orange");
+  drawCircle(camera_x+(qx/2-3), camera_y+(qy/2-33), 15,"orange");
+  drawCircle(camera_x+(rx/2-3), camera_y+(ry/2-33), 10,"red");
+  drawCircle(camera_x+(sx/2-3), camera_y+(sy/2-33), 7,"lightgreen");
+  //drawCircle(camera_x+(xx-3), camera_y+(yy-10), 10,"red");
   console.log('zx='+xx, "zy="+yy, 'keyCode2='+keyCode2);
 
 
@@ -309,6 +531,13 @@ function putInfo() {
     con.fillText("ITEM:" + item.length, 20, 240);
     con.fillText("WEAPON:" + jiki.weapon, 20, 260);
     con.fillText("POWER:" + jiki.power, 20, 280);
+    con.fillText("qx:" + qx, 20, 300);
+    con.fillText("qy:" + qy, 20, 320);
+    con.fillText("rx:" + rx, 20, 340);
+    con.fillText("ry:" + ry, 20, 360);
+    con.fillText("sx:" + sx, 20, 380);
+    con.fillText("sy:" + sy, 20, 400);
+    //drawCircle(qx,qy,20,"red");
 
     //con.fillText("Power up !",jiki.x>>8,jiki.y>>8);
   }
