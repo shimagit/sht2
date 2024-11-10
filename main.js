@@ -740,23 +740,23 @@ function mymousedown(e) {
           }
         }
       */
-        if (xx < 40 && 280 < yy) {
+        if (xx < 40 && 280-100 < yy) {
           keyCode2 = 32; //shot
           console.log("keyCode:",keyCode2," SHOT")
             } else {
-              if(125 < xx && 155 > xx &&  290 < yy ) {
+              if(125-30 < xx && 155-30 > xx &&  290-100 < yy ) {
                 keyCode2 = 40; //down
                 console.log("keyCode:",keyCode2," Down")
               } else {
-                if (125 < xx && 155 > xx && 240 < yy && 275 > yy ) {
+                if (125-30 < xx && 155-30 > xx && 240-100 < yy && 275-100 > yy ) {
                   keyCode2 = 38; //up
                   console.log("keyCode:",keyCode2," Up")
                 } else {
-                  if (105 < xx && 135 > xx && 265 < yy && 295 > yy ) {
+                  if (105-30 < xx && 135-30 > xx && 265-100 < yy && 295-100 > yy ) {
                     keyCode2 = 37; //left
                     console.log("keyCode:",keyCode2," Left")
                   } else {
-                    if (150 < xx && 265 < yy && 295 > yy ) {
+                    if (150-30 < xx && 265-100 < yy && 295-100 > yy ) {
                       keyCode2 = 39; //right;
                       console.log("keyCode:",keyCode2," Right")
                     }
