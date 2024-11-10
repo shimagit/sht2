@@ -13,7 +13,7 @@
 <script src="script.js"></script> -->
 <br />
 <!-- Log: -->
-<pre id="log" style="border: 1px solid #ccc;"></pre>
+<pre id="log" style="border: 1px solid #0000ff;"></pre>
 </body>
   <title>Document</title>
   <style>
@@ -34,10 +34,34 @@
     } 
 
     #log {
-  height: 20px;
+  height: 1px;
   width: 380px;
   overflow: scroll;
   }
+  {
+  box-sizing: border-box;
+  scrollbar-color: transparent transparent;
+  scrollbar-width: 0px;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: transparent;
+  border: none;
+}
+
+* {
+  -ms-overflow-style: none;
+}
+
+
   </style>
 </head>
 <body>

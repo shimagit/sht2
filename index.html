@@ -17,6 +17,32 @@
 </body>
   <title>Document</title>
   <style>
+
+
+* {
+  box-sizing: border-box;
+  scrollbar-color: transparent transparent;
+  scrollbar-width: 0px;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: transparent;
+  border: none;
+}
+
+* {
+  -ms-overflow-style: none;
+}
+
+
     #START {
       position: absolute;
       left: 80px;
@@ -34,7 +60,9 @@
     } 
 
     #log {
-  height: 20px;
+			margin: 0;
+      padding: 0;
+  height: 1px;
   width: 380px;
   overflow: scroll;
   }
