@@ -84,9 +84,10 @@ class Jiki {
     if (this.damage) this.damage--;
     if (this.muteki) this.muteki--;
 
-    if (key[32] && this.reload == 0) {
-      se6.pause();
-      se6.play();
+    //if (key[32] && this.reload == 0) {
+    if ( this.reload == 0) {
+      //se6.pause();
+      //se6.play();
       //弾インスタンス生成（発射開始x,発射開始y,移動量x,移動量y）
       if (this.weapon == 0) {
         if (this.power == 0) {
