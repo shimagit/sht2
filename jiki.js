@@ -61,7 +61,7 @@ class Jiki {
   constructor() {
     this.x = (FIELD_W / 2) << 8;
     this.y = (FIELD_H - 50) << 8;
-    this.mhp = 100;
+    this.mhp = 1000000;
     this.hp = this.mhp;
 
     this.speed = 512;

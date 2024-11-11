@@ -450,9 +450,9 @@ function drawAll() {
   drawCircle(camera_x+163-30, camera_y+282-100, 15,"blue");
   drawCircle(camera_x+141-30, camera_y+260-100, 15,"blue");
   drawCircle(camera_x+141-30, camera_y+305-100, 15,"blue");
-  drawCircle(camera_x+(qx/2-3)-30, camera_y+(qy/2-33), 15,"orange");
-  drawCircle(camera_x+(rx/2-3)-30, camera_y+(ry/2-33), 10,"red");
-  drawCircle(camera_x+(sx/2-3)-30, camera_y+(sy/2-33), 7,"lightgreen");
+  drawCircle(camera_x+(qx/2-3)-15, camera_y+(qy/2-33)+23, 15,"orange");
+  drawCircle(camera_x+(rx/2-3)-15, camera_y+(ry/2-33)+23, 10,"red");
+  drawCircle(camera_x+(sx/2-3)-15, camera_y+(sy/2-33)+23, 7,"lightgreen");
   //drawCircle(camera_x+(xx-3), camera_y+(yy-10), 10,"red");
   console.log('zx='+xx, "zy="+yy, 'keyCode2='+keyCode2);
 
@@ -647,34 +647,34 @@ window.onload = function () {
   }
 };
 
-function controle()
-{
-  switch(keyCode2)
-  {
-    case 37:// 左
-        if ( checkMove( -1,  0 ))tetro_x--;
-        break;
-    case 38:// 上
-        //if ( checkMove(  0, -1 ))tetro_y--;
-        break;
-    case 39:// 右
-        if ( checkMove(  1,  0 ))tetro_x++;
-        break;
-    case 40:// 下
-        while( checkMove(0,  1 ))tetro_y++;
-        break;
-    case 32:// スペース
-        let ntetro = rotate();
-        if ( checkMove( 0, 0, ntetro))
-        {
-          se2.pause();
-          se2.play();
-          tetro = ntetro;
-        }
-        break;
-    }
-    drawAll();
-}
+// function controle()
+// {
+//   switch(keyCode2)
+//   {
+//     case 37:// 左
+//         if ( checkMove( -1,  0 ))tetro_x--;
+//         break;
+//     case 38:// 上
+//         //if ( checkMove(  0, -1 ))tetro_y--;
+//         break;
+//     case 39:// 右
+//         if ( checkMove(  1,  0 ))tetro_x++;
+//         break;
+//     case 40:// 下
+//         while( checkMove(0,  1 ))tetro_y++;
+//         break;
+//     case 32:// スペース
+//         let ntetro = rotate();
+//         if ( checkMove( 0, 0, ntetro))
+//         {
+//           se2.pause();
+//           se2.play();
+//           tetro = ntetro;
+//         }
+//         break;
+//     }
+//     drawAll();
+// }
 
 //キーボードが押された時の処理
 //document.onkeydown = function(e)
@@ -697,18 +697,43 @@ function mymouseup(e){
 
 //マウスのクリックボタンを押した時の処理
 function mymousedown(e) {
-  e.preventDefault() ;
-  var mouseX = !isNaN(e.offsetX) ? e.offsetX : e.touches[0].clientX;
-  var mouseY = !isNaN(e.offsetY) ? e.offsetY : e.touches[0].clientY;
+  //e.preventDefault() ;
+  //var mouseX = !isNaN(e.offsetX) ? e.offsetX : e.touches[0].clientX;
+  //var mouseY = !isNaN(e.offsetY) ? e.offsetY : e.touches[0].clientY;
   //xx = camera_x + (mouseX>>1) //=camera_x+mouseX/100
   //yy = camera_y + (mouseY>>1) //camera_x+mouseX/100
-  xx = mouseX>>1 //=camera_x+mouseX/100
-  yy = mouseY>>1 //camera_x+mouseX/100
+  //xx = mouseX>>1 //=camera_x+mouseX/100
+  //yy = mouseY>>1 //camera_x+mouseX/100
     //console.log('xx='+mouseX, "yy="+mouseY);
     //console.log('xx='+camera_x, "yy="+camera_y);
     //drawCircle(xx, yy, 35,"red");
     //drawCircle(camera_x, camera_y, 20,"white");
-    console.log("*************",keyCode2,xx,yy)
+    keyCode2 = 0;
+    console.log("*************",keyCode2,sx,sy)
+    if (sx < 115 && 400 < sy) {
+      keyCode2 = 32; //shot
+      console.log("keyCode:",keyCode2," SHOT")
+        } else {
+          if(125-30 < xx && 155-30 > xx &&  290-100 < yy ) {
+            keyCode2 = 40; //down
+            console.log("keyCode:",keyCode2," Down")
+          } else {
+            if (125-30 < xx && 155-30 > xx && 240-100 < yy && 275-100 > yy ) {
+              keyCode2 = 38; //up
+              console.log("keyCode:",keyCode2," Up")
+            } else {
+              if (105-30 < xx && 135-30 > xx && 265-100 < yy && 295-100 > yy ) {
+                keyCode2 = 37; //left
+                console.log("keyCode:",keyCode2," Left")
+              } else {
+                if (150-30 < xx && 265-100 < yy && 295-100 > yy ) {
+                  keyCode2 = 39; //right;
+                  console.log("keyCode:",keyCode2," Right")
+                }
+              }
+            }
+          }
+        }
 
 
 
@@ -740,30 +765,30 @@ function mymousedown(e) {
           }
         }
       */
-        if (xx < 40 && 280-100 < yy) {
-          keyCode2 = 32; //shot
-          console.log("keyCode:",keyCode2," SHOT")
-            } else {
-              if(125-30 < xx && 155-30 > xx &&  290-100 < yy ) {
-                keyCode2 = 40; //down
-                console.log("keyCode:",keyCode2," Down")
-              } else {
-                if (125-30 < xx && 155-30 > xx && 240-100 < yy && 275-100 > yy ) {
-                  keyCode2 = 38; //up
-                  console.log("keyCode:",keyCode2," Up")
-                } else {
-                  if (105-30 < xx && 135-30 > xx && 265-100 < yy && 295-100 > yy ) {
-                    keyCode2 = 37; //left
-                    console.log("keyCode:",keyCode2," Left")
-                  } else {
-                    if (150-30 < xx && 265-100 < yy && 295-100 > yy ) {
-                      keyCode2 = 39; //right;
-                      console.log("keyCode:",keyCode2," Right")
-                    }
-                  }
-                }
-              }
-            }
+        // if (xx < 40 && 280-100 < yy) {
+        //   keyCode2 = 32; //shot
+        //   console.log("keyCode:",keyCode2," SHOT")
+        //     } else {
+        //       if(125-30 < xx && 155-30 > xx &&  290-100 < yy ) {
+        //         keyCode2 = 40; //down
+        //         console.log("keyCode:",keyCode2," Down")
+        //       } else {
+        //         if (125-30 < xx && 155-30 > xx && 240-100 < yy && 275-100 > yy ) {
+        //           keyCode2 = 38; //up
+        //           console.log("keyCode:",keyCode2," Up")
+        //         } else {
+        //           if (105-30 < xx && 135-30 > xx && 265-100 < yy && 295-100 > yy ) {
+        //             keyCode2 = 37; //left
+        //             console.log("keyCode:",keyCode2," Left")
+        //           } else {
+        //             if (150-30 < xx && 265-100 < yy && 295-100 > yy ) {
+        //               keyCode2 = 39; //right;
+        //               console.log("keyCode:",keyCode2," Right")
+        //             }
+        //           }
+        //         }
+        //       }
+        //     }
         //console.log("keyCode:",keyCode2," SHOT")
         console.log("---keyCode:",keyCode2)
         key[keyCode2] = true
