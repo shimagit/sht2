@@ -691,6 +691,7 @@ function mymouseup(e){
   key[38] = false;
   key[39] = false;
   key[40] = false;
+  keyCode2 = 0;
   if (gameOver) return;
   //keyCode2 = 0;
 } 
@@ -714,19 +715,19 @@ function mymousedown(e) {
       keyCode2 = 32; //shot
       console.log("keyCode:",keyCode2," SHOT")
         } else {
-          if(125-30 < xx && 155-30 > xx &&  290-100 < yy ) {
+          if(225 < sx && 285 > sx &&  400 < sy ) {
             keyCode2 = 40; //down
             console.log("keyCode:",keyCode2," Down")
           } else {
-            if (125-30 < xx && 155-30 > xx && 240-100 < yy && 275-100 > yy ) {
+            if (225 < sx && 285 > sx && 315 < sy && 365 > sy ) {
               keyCode2 = 38; //up
               console.log("keyCode:",keyCode2," Up")
             } else {
-              if (105-30 < xx && 135-30 > xx && 265-100 < yy && 295-100 > yy ) {
+              if (190 < sx && 245 > sx && 355 < sy && 410 > sy ) {
                 keyCode2 = 37; //left
                 console.log("keyCode:",keyCode2," Left")
               } else {
-                if (150-30 < xx && 265-100 < yy && 295-100 > yy ) {
+                if (275 < sx && 355 < sy && 410 > sy ) {
                   keyCode2 = 39; //right;
                   console.log("keyCode:",keyCode2," Right")
                 }
