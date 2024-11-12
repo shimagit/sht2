@@ -562,7 +562,7 @@ function gameLoop() {
       let r = rand(0, 1);
       teki.push(new Teki(0, rand(0, FIELD_W) << 8, 0, 0, rand(300, 1200)));
     }
-    if (gameCount > 60 * 20) {
+    if (gameCount > 600 * 20) {
       gameWave++;
       gameCount = 0;
       starSpeedReq = 200;

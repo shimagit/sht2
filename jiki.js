@@ -119,9 +119,9 @@ class Jiki {
           tama.push(new Tama(this.x + (8 << 8), this.y - (10 << 8), 500, -2000));
           tama.push(new Tama(this.x - (8 << 8), this.y - (10 << 8), -500, -2000));
         }
-        this.reload = 4; // 連射間隔
-        if (++this.relo2 == 4) {// 連射数
-          this.reload = 20; // 連射間隔（全体）
+        this.reload = 10; // 連射間隔
+        if (++this.relo2 == 8) {// 連射数
+          this.reload = 10; // 連射間隔（全体）
           this.relo2 = 0;
         }
       } else if (jiki.weapon == 1) {
@@ -133,7 +133,7 @@ class Jiki {
         }
       }
     }
-    if (!key[32]) this.reload = this.relo2 = 0;
+    //if (!key[32]) this.reload = this.relo2 = 0;
 
     if (this.reload > 0) this.reload--;
     if (key[37] && this.x > this.speed) {
