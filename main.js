@@ -60,7 +60,7 @@ function handleMove(evt) {
       qy = ongoingTouches[idx].pageY;
       sx = qx;
       sy = qy;
-      touchControlle();
+      //touchControlle();
       // drawCircle(qx,qy,20,lightgreen);
       ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
       // log(`ctx.line( ${touches[i].pageX}, ${touches[i].pageY} );`);
@@ -101,6 +101,7 @@ function handleEnd(evt) {
       // log("can't figure out which touch to end");
     }
   }
+  keyCode2 = 0;
 }
 
 function handleCancel(evt) {
