@@ -171,7 +171,7 @@ function tekiMove02(obj)
 //ボスひよこ（黄色）の移動パターン
 function tekiMove03(obj)
 {
-  if(!obj.flag && (obj.y>>8)>=320 )obj.flag=1;
+  if(!obj.flag && (obj.y>>8)>=220 )obj.flag=1;
 
   if(obj.flag==1)
   {

@@ -221,7 +221,7 @@ $hitarea.on(EVENTNAME_TOUCHSTART, handleStart);
 */
 
 //デバッグフラグ
-const DEBUG = true;
+const DEBUG = false;
 
 //`音量設定
 let soundVolume = 0.2;
@@ -416,25 +416,25 @@ function drawAll() {
     let sz = ((SCREEN_W - 20) * bossHP) / bossMHP;
     let sz2 = SCREEN_W - 20;
 
-    vcon.fillStyle = "rgba(255,0,0,0.5)";
+    vcon.fillStyle = "rgba(0,0,255,0.5)";
     vcon.fillRect(camera_x + 10, camera_y + 15, sz, 10);
-    vcon.strokeStyle = "rgba(255,0,0,0.9)";
+    vcon.strokeStyle = "rgba(0,0,255,0.9)";
     vcon.strokeRect(camera_x + 10, camera_y + 15, sz2, 10);
   }
 
   //自機のHPを表示する
   if (jiki.hp > 0) {
-    let sz = ((SCREEN_W - 20) * jiki.hp) / jiki.mhp;
-    let sz2 = SCREEN_W - 20;
+    let sz = ((SCREEN_W - 60) * jiki.hp) / jiki.mhp;
+    let sz2 = SCREEN_W - 60;
 
-    vcon.fillStyle = "rgba(0,0,255,0.5)";
-    vcon.fillRect(camera_x + 10, camera_y + SCREEN_H - 317, sz, 10);
-    vcon.strokeStyle = "rgba(0,0,255,0.9)";
-    vcon.strokeRect(camera_x + 10, camera_y + SCREEN_H - 317, sz2, 10);
+    vcon.fillStyle = "rgba(0,255,0,0.5)";
+    vcon.fillRect(camera_x + 2, camera_y + SCREEN_H - 12, sz, 10);
+    vcon.strokeStyle = "rgba(0,255,0,0.9)";
+    vcon.strokeRect(camera_x + 2, camera_y + SCREEN_H - 12, sz2, 10);
   }
   //スコア表示
   vcon.fillStyle = "white";
-  vcon.fillText("SCORE " + score, camera_x + 100, camera_y + 14);
+  vcon.fillText("SCORE " + score, camera_x + 50, camera_y + 14);
 
   //power up message
   if (jiki.powerFlag) {
@@ -448,7 +448,9 @@ function drawAll() {
     }
   }
 
-  drawCircle(camera_x+ 20-0, camera_y+300-100, 20,"blue");
+  if (DEBUG) {
+    drawCircle(camera_x+ 20-0, camera_y+300-100, 20,"blue");
+  }
   drawCircle(camera_x+120-30, camera_y+282-100, 15,"blue");
   drawCircle(camera_x+163-30, camera_y+282-100, 15,"blue");
   drawCircle(camera_x+141-30, camera_y+260-100, 15,"blue");
@@ -464,8 +466,10 @@ function drawAll() {
   vcon.strokeStyle ="red";
   vcon.strokeText = "red ";
   vcon.fillStyle = "white";
-  vcon.fillText("◎",    camera_x+ 14-0, camera_y+298-100);
-  vcon.fillText("Shot", camera_x+  9-0, camera_y+310-100);
+  if (DEBUG) {
+    vcon.fillText("◎",    camera_x+ 14-0, camera_y+298-100);
+    vcon.fillText("Shot", camera_x+  9-0, camera_y+310-100);
+  }
   vcon.fillText("←",   camera_x+115-30, camera_y+285-100);
   vcon.fillText("→",   camera_x+158-30, camera_y+285-100);
   vcon.fillText("↑",   camera_x+138-30, camera_y+262-100);
@@ -563,7 +567,7 @@ function gameLoop() {
       let r = rand(0, 1);
       teki.push(new Teki(0, rand(0, FIELD_W) << 8, 0, 0, rand(300, 1200)));
     }
-    if (gameCount > 600 * 20) {
+    if (gameCount > 60 * 20) {
       gameWave++;
       gameCount = 0;
       starSpeedReq = 200;
