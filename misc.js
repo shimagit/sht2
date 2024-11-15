@@ -114,7 +114,7 @@ class Expl extends CharaBase {
   update() {
     if (this.timer) {
       this.timer--;
-      return;
+      return;                                                                                                                             
     }
     super.update();
   }
